@@ -184,18 +184,91 @@ export default router;
 '''
 
 
+import json
+import urllib.request
+import urllib.error
+
+
+def query_llm_api(prompt: str, system_prompt: str) -> Optional[str]:
+    """Queries live LLM APIs (Gemini or OpenAI) if API keys are configured."""
+    gemini_key = os.getenv("GEMINI_API_KEY")
+    openai_key = os.getenv("OPENAI_API_KEY")
+
+    if gemini_key:
+        model = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={gemini_key}"
+        full_prompt = f"{system_prompt}\n\nTask:\n{prompt}"
+        payload = {"contents": [{"parts": [{"text": full_prompt}]}]}
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(payload).encode("utf-8"),
+            headers={"Content-Type": "application/json"},
+            method="POST"
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=12) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                text = data["candidates"][0]["content"]["parts"][0]["text"]
+                # Strip markdown code fences if LLM wrapped it
+                return re.sub(r"^```[a-zA-Z]*\n|```$", "", text.strip())
+        except Exception:
+            return None
+
+    elif openai_key:
+        model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+        url = "https://api.openai.com/v1/chat/completions"
+        payload = {
+            "model": model,
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": prompt}
+            ],
+            "temperature": 0.2
+        }
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(payload).encode("utf-8"),
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {openai_key}"
+            },
+            method="POST"
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=12) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                text = data["choices"][0]["message"]["content"]
+                return re.sub(r"^```[a-zA-Z]*\n|```$", "", text.strip())
+        except Exception:
+            return None
+
+    return None
+
+
 def generate_api_route(prompt: str, backend_type: str = "fastapi") -> Dict[str, str]:
     """Generates code and recommended target filepath for the requested API route."""
     resource = extract_resource_name(prompt)
+    is_express = "express" in backend_type.lower() or "node" in backend_type.lower()
 
-    if "express" in backend_type.lower() or "node" in backend_type.lower():
-        code = generate_express_route(prompt)
+    if is_express:
         filename = f"{resource}Routes.ts"
         dest_rel = f"backend/src/routes/{filename}"
     else:
-        code = generate_fastapi_route(prompt)
         filename = f"{resource}_routes.py"
         dest_rel = f"backend/app/api/{filename}"
+
+    # Check for live LLM response
+    system_prompt = (
+        f"You are Tiger Framework AI Co-Pilot. Write clean, complete, typed code for a "
+        f"{'Express TypeScript router' if is_express else 'FastAPI APIRouter'} module "
+        f"matching the prompt. Output ONLY valid executable code without markdown explanations."
+    )
+    llm_code = query_llm_api(prompt, system_prompt)
+
+    if llm_code and len(llm_code) > 80:
+        code = llm_code
+    else:
+        code = generate_express_route(prompt) if is_express else generate_fastapi_route(prompt)
 
     return {
         "resource": resource,

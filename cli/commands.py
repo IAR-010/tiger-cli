@@ -524,6 +524,14 @@ def doctor() -> None:
         raise typer.Exit(code=1)
 
 
+# --- 8. Interactive Studio Dashboard (tiger studio) ---
+def studio() -> None:
+    """Launch Tiger Studio: interactive terminal dashboard for project management."""
+    from core.studio import launch_studio
+
+    launch_studio(Path.cwd())
+
+
 # --- Registration Helper ---
 def register_commands(app: typer.Typer) -> None:
     """Registers all commands onto the main Typer application."""
@@ -531,6 +539,7 @@ def register_commands(app: typer.Typer) -> None:
     app.command(name="push", help="Automate Git repo initialization, commit, and push.")(push)
     app.command(name="make:ui", help="Inject 3D Glassmorphism & dark mode UI components.")(make_ui)
     app.command(name="doctor", help="Inspect developer toolchain and environment health.")(doctor)
+    app.command(name="studio", help="Launch interactive full-terminal management dashboard.")(studio)
     app.add_typer(db_app, name="db")
     app.add_typer(ai_app, name="ai")
     app.add_typer(deploy_app, name="deploy")

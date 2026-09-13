@@ -106,14 +106,42 @@ tiger db init --type PostgreSQL --name my_app_db
 tiger db migrate --message "add_users_table"
 ```
 
-### 5. AI Co-Pilot
+### 5. AI Co-Pilot (Live LLM & Built-in Engine)
 ```bash
+# Optional: Set an API key for live LLM intelligence (Gemini or OpenAI)
+export GEMINI_API_KEY="your-gemini-key"
+# or: export OPENAI_API_KEY="your-openai-key"
+
 # Generate API routes from natural language
 tiger ai route "Create a route to manage products with title, price, and inventory"
 
-# Diagnose errors or stack traces
+# Diagnose terminal errors or stack traces
 tiger ai debug "RuntimeError: Task was destroyed but it is pending! coroutine was never awaited"
 ```
+
+### 6. Production Deployment Automation
+```bash
+# Generate production Nginx reverse proxy config with SSL
+tiger deploy nginx --domain app.mydomain.com --ssl
+
+# Generate hardened multi-stage Docker Compose production file
+tiger deploy docker --database PostgreSQL
+
+# Generate cloud configuration & automated GitHub Actions CI/CD
+tiger deploy cloud --provider "Cloud Run"
+```
+
+### 7. Environment Health Check (Tiger Doctor)
+```bash
+tiger doctor
+```
+Inspects Python, Git, Node.js, npm, Docker, and Docker Compose readiness.
+
+### 8. Interactive Terminal Dashboard (Tiger Studio)
+```bash
+tiger studio
+```
+Launches an interactive, full-terminal dashboard providing a unified GUI inside your terminal to run migrations, inject UI components, generate AI routes, commit changes, and monitor project status.
 
 ---
 

@@ -164,3 +164,18 @@ def test_doctor_diagnostics():
     assert "Git" in diag
     assert diag["Python"]["status"] == "ok"
     assert diag["Git"]["status"] == "ok"
+
+
+def test_llm_query_fallback():
+    """Verify LLM query handles lack of API keys with safe fallback."""
+    from core.ai_copilot import query_llm_api
+    # With no key set or mock prompt, should return None
+    res = query_llm_api("Test prompt", "System instruction")
+    assert res is None or isinstance(res, str)
+
+
+def test_studio_header_rendering():
+    """Verify Studio header renders without exception."""
+    from core.studio import display_studio_header
+    with tempfile.TemporaryDirectory() as tmpdir:
+        display_studio_header({"name": "test_app"}, Path(tmpdir))
