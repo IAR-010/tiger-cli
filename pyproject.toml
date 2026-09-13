@@ -26,3 +26,7 @@ py-modules = ["main"]
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["core*", "cli*"]
+
+[tool.setuptools.package-data]
+"core" = ["assets/*"]
+
