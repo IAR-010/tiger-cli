@@ -53,28 +53,49 @@ tiger-cli/
 
 ## Quickstart & Installation
 
-### 1. Prerequisites
-- Python 3.9+ (Python 3.10+ recommended)
-- Git
+### 1. One-Line Global Install (Recommended)
 
-### 2. Setup Virtual Environment
-
-**Windows (PowerShell):**
+**Windows (PowerShell as Administrator or User):**
 ```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+irm https://raw.githubusercontent.com/Rafin010/tiger-cli/main/scripts/install.ps1 | iex
 ```
 
 **macOS / Linux:**
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
+curl -fsSL https://raw.githubusercontent.com/Rafin010/tiger-cli/main/scripts/install.sh | bash
 ```
 
-### 3. Install in Editable Mode
+**Via Node.js / NPX (Zero-install):**
 ```bash
+npx tiger-cli create-app my-app
+```
+
+---
+
+### 2. Manual / Developer Setup
+
+#### Prerequisites
+- Python 3.9+ (Python 3.10+ recommended)
+- Git
+
+**Windows (PowerShell):**
+```powershell
+git clone https://github.com/Rafin010/tiger-cli.git
+cd tiger-cli
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 pip install -e .
 ```
+
+**macOS / Linux:**
+```bash
+git clone https://github.com/Rafin010/tiger-cli.git
+cd tiger-cli
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
+```
+
 
 ---
 
