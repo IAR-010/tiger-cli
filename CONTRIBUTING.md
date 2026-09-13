@@ -23,39 +23,39 @@ By participating in this project, you agree to abide by our [Code of Conduct](CO
 
 ### 1. Fork & Clone
 Fork the repository on GitHub and clone your fork locally:
-\\\ash
+`ash
 git clone https://github.com/IAR-010/tiger-cli.git
 cd tiger-cli
-\\\
+`
 
 ### 2. Set Up Virtual Environment
-\\\ash
+`ash
 # Create virtual environment
 python -m venv .venv
 
 # Activate environment
 # On Windows (PowerShell):
-.\\.venv\\Scripts\\Activate.ps1
+.\.venv\Scripts\Activate.ps1
 # On macOS / Linux:
 source .venv/bin/activate
-\\\
+`
 
 ### 3. Install in Editable Mode
-\\\ash
+`ash
 pip install -e .
-\\\
+`
 
 ### 4. Run Automated Tests
 Before making changes, verify that the existing test suite passes:
-\\\ash
+`ash
 pytest -v
-\\\
+`
 
 ---
 
 ## Project Architecture
 
-\\\
+`
 tiger-cli/
 ├── main.py                     # Typer CLI application entry point
 ├── cli/
@@ -71,26 +71,26 @@ tiger-cli/
 │   └── studio.py               # Interactive terminal dashboard
 └── tests/
     └── test_scaffold.py        # Automated pytest suite
-\\\
+`
 
 ---
 
 ## Pull Request Workflow
 
 1. Create a descriptive branch:
-   \\\ash
+   `ash
    git checkout -b feat/my-awesome-feature
-   \\\
+   `
 2. Write clean, readable code with type annotations.
-3. Add corresponding test cases in \	ests/\.
+3. Add corresponding test cases in 	ests/.
 4. Ensure all tests pass:
-   \\\ash
-   pytest
-   \\\
-5. Commit and push your changes:
-   \\\ash
-   tiger push -m \"feat: implement new glassmorphic component\"
-   \\\
+   `ash
+   pytest -v
+   `
+5. Commit and push your changes using Tiger Git:
+   `ash
+   tiger push -m "feat: implement new glassmorphic component"
+   `
 6. Open a Pull Request on [IAR-010/tiger-cli](https://github.com/IAR-010/tiger-cli/pulls).
 
 ---

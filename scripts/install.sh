@@ -57,7 +57,7 @@ REPO_DIR="$(dirname "$SCRIPT_DIR")"
 if [ -f "$REPO_DIR/pyproject.toml" ]; then
   $VENV_PYTHON -m pip install --quiet -e "$REPO_DIR"
 else
-  $VENV_PYTHON -m pip install --quiet tiger-cli 2>/dev/null || $VENV_PYTHON -m pip install --quiet git+https://github.com/IAR-010/tiger-cli.git
+  $VENV_PYTHON -m pip install --quiet tiger-cli
 fi
 
 # 5. Create wrapper in ~/.tiger/bin/tiger

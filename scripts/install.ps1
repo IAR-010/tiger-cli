@@ -58,11 +58,7 @@ $repoDir = Split-Path -Parent $scriptDir
 if (Test-Path (Join-Path $repoDir "pyproject.toml")) {
     & $venvPython -m pip install --quiet -e $repoDir
 } else {
-    & $venvPython -m pip install --quiet tiger-cli 2>$null
-    if ($LASTEXITCODE -ne 0) {
-        Write-Host "Installing latest release from GitHub..." -ForegroundColor Gray
-        & $venvPython -m pip install --quiet git+https://github.com/IAR-010/tiger-cli.git
-    }
+    & $venvPython -m pip install --quiet tiger-cli
 }
 
 # 5. Create executable wrapper in .tiger\bin
