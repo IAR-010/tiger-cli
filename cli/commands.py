@@ -419,11 +419,118 @@ def ai_debug(
     )
 
 
+# --- 6. Deployment Commands (tiger deploy nginx, docker, cloud) ---
+deploy_app = typer.Typer(
+    help="Production deployment configuration generator (Docker, Nginx, Cloud)",
+    no_args_is_help=True
+)
+
+
+@deploy_app.command(name="nginx")
+def deploy_nginx(
+    domain: str = typer.Option(
+        "example.com",
+        "--domain",
+        "-d",
+        help="Production domain name for Nginx."
+    ),
+    ssl: bool = typer.Option(
+        False,
+        "--ssl/--no-ssl",
+        help="Enable Let's Encrypt SSL/TLS reverse proxy blocks."
+    )
+) -> None:
+    """Generate production-ready Nginx reverse proxy configuration."""
+    from core.deploy_tools import write_nginx_config
+
+    conf_file = write_nginx_config(Path.cwd(), domain=domain, enable_ssl=ssl)
+    console.print(
+        Panel(
+            f"[bold green]✔ Nginx configuration generated successfully![/bold green]\n"
+            f"[dim]File path:[/dim] [white]{conf_file.resolve()}[/white]\n"
+            f"[dim]Domain:[/dim]    [cyan]{domain}[/cyan]\n"
+            f"[dim]SSL/TLS:[/dim]   {'[bold green]Enabled (Port 443)[/bold green]' if ssl else '[yellow]HTTP (Port 80)[/yellow]'}",
+            border_style="green",
+            box=box.ROUNDED,
+        )
+    )
+
+
+@deploy_app.command(name="docker")
+def deploy_docker(
+    database: str = typer.Option(
+        "PostgreSQL",
+        "--database",
+        "-d",
+        help="Database engine [PostgreSQL, MySQL, SQLite]."
+    )
+) -> None:
+    """Generate production-hardened multi-stage docker-compose.prod.yml configuration."""
+    from core.deploy_tools import write_docker_prod_compose
+
+    compose_file = write_docker_prod_compose(Path.cwd(), database=database)
+    console.print(
+        Panel(
+            f"[bold green]✔ Production Docker Compose generated successfully![/bold green]\n"
+            f"[dim]File path:[/dim] [white]{compose_file.resolve()}[/white]\n\n"
+            f"[yellow]To deploy:[/yellow]\n"
+            f"  [cyan]docker compose -f docker-compose.prod.yml up -d --build[/cyan]",
+            border_style="green",
+            box=box.ROUNDED,
+        )
+    )
+
+
+@deploy_app.command(name="cloud")
+def deploy_cloud(
+    provider: Optional[str] = typer.Option(
+        None,
+        "--provider",
+        "-p",
+        help="Target cloud provider [Cloud Run, Fly.io, Render, Railway, AWS ECS]."
+    )
+) -> None:
+    """Generate Cloud deployment templates and automated GitHub Actions CI/CD workflows."""
+    from core.deploy_tools import write_cloud_deployment
+
+    if not provider:
+        provider = _ask_choice(
+            "Select target cloud provider:",
+            choices=["Cloud Run", "Fly.io", "Render", "Railway", "AWS ECS"],
+        )
+        if not provider:
+            raise typer.Exit(code=1)
+
+    files = write_cloud_deployment(Path.cwd(), provider=provider)
+    console.print(
+        Panel(
+            f"[bold green]✔ Cloud deployment & CI/CD workflow generated for {provider}![/bold green]\n"
+            f"[dim]Workflow:[/dim] [white]{files['workflow'].resolve()}[/white]\n"
+            + (f"[dim]Config:[/dim]   [white]{files['config'].resolve()}[/white]\n" if "config" in files else "")
+            + f"\n[yellow]Continuous Deployment:[/yellow] Any push to [cyan]main[/cyan] branch triggers automated build & deploy.",
+            border_style="green",
+            box=box.ROUNDED,
+        )
+    )
+
+
+# --- 7. Diagnostics Command (tiger doctor) ---
+def doctor() -> None:
+    """Inspect developer toolchain, versions, and system health."""
+    from core.doctor import display_diagnostics_report
+
+    all_ok = display_diagnostics_report()
+    if not all_ok:
+        raise typer.Exit(code=1)
+
+
 # --- Registration Helper ---
 def register_commands(app: typer.Typer) -> None:
     """Registers all commands onto the main Typer application."""
     app.command(name="create-app", help="Scaffold a new full-stack project with interactive setup.")(create_app)
     app.command(name="push", help="Automate Git repo initialization, commit, and push.")(push)
     app.command(name="make:ui", help="Inject 3D Glassmorphism & dark mode UI components.")(make_ui)
+    app.command(name="doctor", help="Inspect developer toolchain and environment health.")(doctor)
     app.add_typer(db_app, name="db")
     app.add_typer(ai_app, name="ai")
+    app.add_typer(deploy_app, name="deploy")

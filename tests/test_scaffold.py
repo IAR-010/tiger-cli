@@ -1,4 +1,4 @@
-"""Comprehensive test suite for Tiger Framework CLI (Phase 1 & Phase 2)."""
+"""Comprehensive test suite for Tiger Framework CLI (Phase 1, 2 & 3)."""
 
 import tempfile
 from pathlib import Path
@@ -9,6 +9,15 @@ from core.scafold import ProjectConfig, get_project_blueprint, write_project_boi
 from core.ui_library import list_available_ui_components, inject_ui_component
 from core.ai_copilot import generate_api_route, diagnose_code_issue
 from core.db_tools import init_database, execute_migration
+from core.deploy_tools import (
+    generate_nginx_config,
+    write_nginx_config,
+    generate_docker_prod_compose,
+    write_docker_prod_compose,
+    generate_github_actions_ci_cd,
+    write_cloud_deployment,
+)
+from core.doctor import run_diagnostics
 
 runner = CliRunner()
 
@@ -29,6 +38,8 @@ def test_cli_help_includes_all_commands():
     assert "make:ui" in result.output
     assert "db" in result.output
     assert "ai" in result.output
+    assert "deploy" in result.output
+    assert "doctor" in result.output
 
 
 def test_boilerplate_generation_and_files():
@@ -101,3 +112,55 @@ def test_ai_copilot_route_and_debug():
 
     res_diag = diagnose_code_issue("RuntimeError: Task was destroyed! coroutine was never awaited")
     assert "Un-awaited Coroutine" in res_diag["root_cause"]
+
+
+def test_deployment_nginx_generator():
+    """Verify Nginx reverse proxy configuration generation."""
+    conf = generate_nginx_config("mycustomdomain.com", enable_ssl=True)
+    assert "upstream backend_upstream" in conf
+    assert "ssl_certificate" in conf
+    assert "mycustomdomain.com" in conf
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        root = Path(tmpdir)
+        dest = write_nginx_config(root, "mycustomdomain.com", enable_ssl=False)
+        assert dest.exists()
+        assert "proxy_pass http://backend_upstream;" in dest.read_text(encoding="utf-8")
+
+
+def test_deployment_docker_prod():
+    """Verify production Docker Compose configuration generation."""
+    compose = generate_docker_prod_compose("saas-prod", "PostgreSQL")
+    assert "backend:" in compose
+    assert "postgres:" in compose
+    assert "healthcheck:" in compose
+    assert "restart: always" in compose
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        root = Path(tmpdir)
+        dest = write_docker_prod_compose(root, "saas-prod", "MySQL")
+        assert dest.exists()
+        assert "mysql:" in dest.read_text(encoding="utf-8")
+
+
+def test_deployment_cloud_and_ci_cd():
+    """Verify Cloud & GitHub Actions CI/CD generation."""
+    workflow = generate_github_actions_ci_cd("test-app", "Cloud Run")
+    assert "Tiger CI/CD Pipeline" in workflow
+    assert "docker-compose.prod.yml" in workflow
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        root = Path(tmpdir)
+        files = write_cloud_deployment(root, "Fly.io")
+        assert files["workflow"].exists()
+        assert files["config"].exists()
+        assert "app = " in files["config"].read_text(encoding="utf-8")
+
+
+def test_doctor_diagnostics():
+    """Verify Tiger Doctor diagnostics report runs without exception."""
+    diag = run_diagnostics()
+    assert "Python" in diag
+    assert "Git" in diag
+    assert diag["Python"]["status"] == "ok"
+    assert diag["Git"]["status"] == "ok"
