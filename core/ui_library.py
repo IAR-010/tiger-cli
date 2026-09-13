@@ -118,12 +118,12 @@ export const GlassNavbar: React.FC<GlassNavbarProps> = ({
         backdrop-blur-2xl backdrop-saturate-150 transition-all duration-300">
         
         {/* Brand Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-300 text-slate-950 font-black shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
-            🐅
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900/80 border border-cyan-500/30 shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform overflow-hidden p-1">
+            <img src="/logo.png" alt="Tiger Logo" className="h-full w-full object-contain drop-shadow-[0_0_10px_rgba(6,182,212,0.6)]" />
           </div>
           <span className="text-lg font-black tracking-wider text-white">
-            {brandName} <span className="text-amber-400 font-light">FRAMEWORK</span>
+            {brandName} <span className="text-cyan-400 font-light">FRAMEWORK</span>
           </span>
         </Link>
 

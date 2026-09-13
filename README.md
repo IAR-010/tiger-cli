@@ -1,6 +1,8 @@
-# Tiger Framework CLI 🐅
-
-> **Command-line based full-stack meta-framework designed to accelerate project setup, API design, version control, and deployment for modern web applications.**
+<div align="center">
+  <img src="assets/logo.png" alt="Tiger Framework Logo" width="150" />
+  <h1>Tiger Framework CLI</h1>
+  <p><strong>Command-line based full-stack meta-framework designed to accelerate project setup, API design, version control, and deployment for modern web applications.</strong></p>
+</div>
 
 ---
 
@@ -21,18 +23,25 @@ Tiger Framework delivers a unified developer experience from first scaffold to p
 
 ```
 tiger-cli/
+├── assets/
+│   └── logo.png                # Official Tiger Framework 3D Glassmorphic logo
 ├── pyproject.toml              # Build config, dependencies, and 'tiger' console script
 ├── .gitignore                  # Git ignore rules
 ├── README.md                   # Full framework guide
 ├── main.py                     # Main Typer entry point
 ├── core/
+│   ├── assets/
+│   │   └── logo.png            # Template logo asset for generated apps
 │   ├── __init__.py             # Core package init
 │   ├── scafold.py              # Scaffolding blueprint logic & boilerplate generator
 │   ├── scaffold.py             # Alias module
 │   ├── git_tools.py            # Git repository check, init, commit, and push automation
 │   ├── ui_library.py           # 3D Glassmorphism & dark mode UI component library
 │   ├── db_tools.py             # Database connector generator & migrations orchestrator
-│   └── ai_copilot.py           # LLM route generator & error diagnosis engine
+│   ├── ai_copilot.py           # LLM route generator & error diagnosis engine
+│   ├── deploy_tools.py         # Production deployment generator (Nginx, Docker, Cloud)
+│   ├── doctor.py               # Platform diagnostics suite
+│   └── studio.py               # Interactive terminal management console
 ├── cli/
 │   ├── __init__.py             # CLI package init
 │   └── commands.py             # Typer command definitions

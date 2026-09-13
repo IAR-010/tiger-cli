@@ -626,6 +626,14 @@ CMD ["npm", "start"]
         frontend_dir = root / "frontend"
         frontend_dir.mkdir(parents=True, exist_ok=True)
 
+        public_dir = frontend_dir / "public"
+        public_dir.mkdir(parents=True, exist_ok=True)
+
+        logo_src = Path(__file__).parent / "assets" / "logo.png"
+        if logo_src.exists():
+            import shutil
+            shutil.copy2(logo_src, public_dir / "logo.png")
+
         (frontend_dir / "package.json").write_text(
             f'''{{
   "name": "{config.project_name}-frontend",
@@ -778,11 +786,16 @@ export default function Home() {{
       <main className="max-w-6xl mx-auto px-6 pt-36 pb-20">
         {{/* Hero Section */}}
         <div className="text-center space-y-6 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs font-bold tracking-wide">
-            🐅 Tiger Framework Meta-Stack
+          <div className="flex justify-center">
+            <div className="w-24 h-24 rounded-3xl bg-slate-900/80 border border-cyan-500/30 p-2 shadow-[0_0_40px_rgba(6,182,212,0.35)] backdrop-blur-xl hover:scale-105 transition-transform duration-300">
+              <img src="/logo.png" alt="Tiger Logo" className="w-full h-full object-contain drop-shadow-[0_0_20px_rgba(6,182,212,0.6)]" />
+            </div>
+          </div>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-xs font-bold tracking-wide">
+            Tiger Framework Meta-Stack
           </div>
           <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-tight">
-            Crafted for <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-500">Unmatched Speed</span>
+            Crafted for <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-sky-200 to-blue-500">Unmatched Speed</span>
           </h1>
           <p className="text-lg text-slate-400 leading-relaxed">
             Your full-stack foundation with <strong>{config.backend}</strong>, <strong>{config.database}</strong>, and <strong>Next.js 14 App Router</strong> with 3D Glassmorphic components.
