@@ -22,6 +22,14 @@
   ],
   "author": "Tiger Framework Team",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IAR-010/tiger-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/IAR-010/tiger-cli/issues"
+  },
+  "homepage": "https://github.com/IAR-010/tiger-cli#readme",
   "engines": {
     "node": ">=16.0.0"
   }

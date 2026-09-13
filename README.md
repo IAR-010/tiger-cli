@@ -2,9 +2,18 @@
   <img src="assets/logo.png" alt="Tiger Framework Logo" width="150" />
   <h1>Tiger Framework CLI</h1>
   <p><strong>Command-line based full-stack meta-framework designed to accelerate project setup, API design, version control, and deployment for modern web applications.</strong></p>
+
+  <p>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT" /></a>
+    <a href="https://github.com/IAR-010"><img src="https://img.shields.io/badge/Organization-IAR--010-black" alt="Organization: IAR-010" /></a>
+    <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome" /></a>
+    <img src="https://img.shields.io/badge/Python-3.9+-3776AB.svg" alt="Python 3.9+" />
+    <img src="https://img.shields.io/badge/Next.js-14-black.svg" alt="Next.js 14" />
+  </p>
 </div>
 
 ---
+
 
 ## Architecture & Features
 
@@ -57,12 +66,12 @@ tiger-cli/
 
 **Windows (PowerShell as Administrator or User):**
 ```powershell
-irm https://raw.githubusercontent.com/Rafin010/tiger-cli/main/scripts/install.ps1 | iex
+irm https://raw.githubusercontent.com/IAR-010/tiger-cli/main/scripts/install.ps1 | iex
 ```
 
 **macOS / Linux:**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Rafin010/tiger-cli/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/IAR-010/tiger-cli/main/scripts/install.sh | bash
 ```
 
 **Via Node.js / NPX (Zero-install):**
@@ -80,7 +89,7 @@ npx tiger-cli create-app my-app
 
 **Windows (PowerShell):**
 ```powershell
-git clone https://github.com/Rafin010/tiger-cli.git
+git clone https://github.com/IAR-010/tiger-cli.git
 cd tiger-cli
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
@@ -89,7 +98,7 @@ pip install -e .
 
 **macOS / Linux:**
 ```bash
-git clone https://github.com/Rafin010/tiger-cli.git
+git clone https://github.com/IAR-010/tiger-cli.git
 cd tiger-cli
 python3 -m venv .venv
 source .venv/bin/activate
