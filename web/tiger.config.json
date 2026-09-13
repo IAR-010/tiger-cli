@@ -1,0 +1,10 @@
+{
+  "name": "tiger-framework-web",
+  "framework": "tiger",
+  "version": "0.1.0",
+  "backend": "Python (FastAPI)",
+  "database": "PostgreSQL",
+  "frontend": true,
+  "db_url": "postgresql+asyncpg://postgres:postgres@localhost:5432/tiger_framework_web",
+  "db_name": "tiger_framework_web"
+}
