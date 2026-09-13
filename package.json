@@ -1,0 +1,28 @@
+{
+  "name": "tiger-cli",
+  "version": "0.1.0",
+  "description": "Command-line based full-stack meta-framework for modern web applications",
+  "main": "bin/tiger.js",
+  "bin": {
+    "tiger": "./bin/tiger.js",
+    "create-tiger-app": "./bin/tiger.js"
+  },
+  "scripts": {
+    "test": "pytest -v"
+  },
+  "keywords": [
+    "cli",
+    "meta-framework",
+    "fastapi",
+    "express",
+    "nextjs",
+    "tailwind",
+    "glassmorphism",
+    "scaffolding"
+  ],
+  "author": "Tiger Framework Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

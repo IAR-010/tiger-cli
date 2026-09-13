@@ -1,0 +1,10 @@
+{
+  "name": "prod-audit-app",
+  "framework": "tiger",
+  "version": "0.1.0",
+  "backend": "Python (FastAPI)",
+  "database": "PostgreSQL",
+  "frontend": true,
+  "db_url": "postgresql+asyncpg://postgres:postgres@localhost:5432/prod_audit_app",
+  "db_name": "prod_audit_app"
+}
