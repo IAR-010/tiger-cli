@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Orbitron } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 
 const orbitron = Orbitron({
@@ -74,19 +75,19 @@ export const metadata: Metadata = {
       'High-velocity full-stack meta-framework with FastAPI/Express, PostgreSQL, Next.js 16.3.5, 3D Glassmorphic UI Kit, and autonomous Git tools. Powered by x010.tech.',
     images: [
       {
-        url: '/logo.png',
-        width: 800,
-        height: 800,
-        alt: 'Tiger Framework Official 3D Glassmorphic Logo',
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Tiger Framework Live Terminal Scaffold — 1 Command. Complete Full-Stack Ready in 1.4s.',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Tiger Framework — 3D Glassmorphic Full-Stack Meta-Framework',
+    title: 'Tiger Framework — Full-Stack Framework & CLI Toolchain',
     description:
-      'Scaffold full-stack FastAPI/Next.js 16.3.5 apps with 3D Glassmorphism, database migrations, and autonomous Git push in under 2 seconds. Powered by x010.tech.',
-    images: ['/logo.png'],
+      '1 Command. Complete Full-Stack Architecture Ready in 1.4s. FastAPI/Express, PostgreSQL, Next.js 16.3.5, 3D Glassmorphic UI Kit, and autonomous Git tools. Powered by x010.tech.',
+    images: ['/og-image.png'],
     creator: '@x010tech',
   },
   icons: {
@@ -198,7 +199,9 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <script
+        <Script
+          id="scroll-restoration"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               try {

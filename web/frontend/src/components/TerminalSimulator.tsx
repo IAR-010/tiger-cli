@@ -458,7 +458,7 @@ export default function TerminalSimulator() {
         <div className="text-zinc-600 text-xs">
           Tiger Framework Live Terminal Execution Engine [v0.1.0]
           <br />
-          Run commands or click quick presets to observe live download and file creation processes.
+          1 single command scaffolds complete full-stack folder structure & production stack in 1.4s.
         </div>
 
         {history.map((item, idx) => (

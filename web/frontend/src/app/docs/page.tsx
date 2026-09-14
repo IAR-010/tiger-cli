@@ -111,26 +111,32 @@ export default function DocsPage() {
 
         {/* 2-Column Docs Layout: Sidebar Navigation + Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
-          {/* Sticky Sidebar */}
-          <aside className="lg:col-span-1 space-y-1 text-xs">
-            <div className="sticky top-20 space-y-1 p-2 rounded-xl bg-zinc-950/60 border border-zinc-800/60">
-              <div className="px-3 py-2 text-[11px] font-mono text-zinc-500 uppercase tracking-wider font-semibold">
+          {/* Sticky Scrollable Sidebar */}
+          <aside className="lg:col-span-1 text-xs">
+            <div className="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto space-y-1 p-2 rounded-xl bg-zinc-950/80 border border-zinc-800/80 shadow-lg overscroll-contain pr-1.5 focus:outline-none">
+              <div className="px-3 py-2 text-[11px] font-mono text-zinc-500 uppercase tracking-wider font-semibold sticky top-0 bg-zinc-950/95 backdrop-blur-sm z-10 pb-1 border-b border-zinc-900">
                 Table of Contents
               </div>
-              {SECTIONS.map((sec) => (
-                <a
-                  key={sec.id}
-                  href={`#${sec.id}`}
-                  onClick={() => setActiveSection(sec.id)}
-                  className={`block px-3 py-2 rounded-lg transition-colors font-medium ${
-                    activeSection === sec.id
-                      ? 'bg-zinc-800 text-white font-semibold'
-                      : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50'
-                  }`}
-                >
-                  {sec.title}
-                </a>
-              ))}
+              <div className="pt-1.5 space-y-0.5">
+                {SECTIONS.map((sec) => (
+                  <a
+                    key={sec.id}
+                    href={`#${sec.id}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setActiveSection(sec.id);
+                      document.getElementById(sec.id)?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className={`block px-3 py-2 rounded-lg transition-colors font-medium ${
+                      activeSection === sec.id
+                        ? 'bg-zinc-800 text-white font-semibold'
+                        : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50'
+                    }`}
+                  >
+                    {sec.title}
+                  </a>
+                ))}
+              </div>
               <div className="pt-3 mt-3 border-t border-zinc-800/60 px-3 pb-1">
                 <a
                   href="https://github.com/IAR-010/tiger-cli"

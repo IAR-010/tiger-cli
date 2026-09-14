@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import GlassNavbar from '@/components/ui/GlassNavbar';
 import GlassStats from '@/components/ui/GlassStats';
 import GlassButton from '@/components/ui/GlassButton';
@@ -147,6 +148,32 @@ export default function Home() {
     return () => clearTimeout(startTimer);
   }, []);
 
+  const renderStyledHeadline = (text: string) => {
+    const p1 = text.slice(0, 11); // "Full-Stack "
+    const p2 = text.slice(11, 20); // "Framework"
+    const p3 = text.slice(20, 23); // " & "
+    const p4 = text.slice(23, 26); // "CLI"
+    const p5 = text.slice(26); // " Toolchain."
+
+    return (
+      <>
+        <span className="text-zinc-100">{p1}</span>
+        {p2 && (
+          <span className="text-rose-500 font-semibold">
+            {p2}
+          </span>
+        )}
+        {p3 && <span className="text-zinc-400">{p3}</span>}
+        {p4 && (
+          <span className="text-amber-500 font-semibold">
+            {p4}
+          </span>
+        )}
+        {p5 && <span className="text-zinc-100">{p5}</span>}
+      </>
+    );
+  };
+
   // Scroll Reveal Intersection Observer setup for elements below the fold
   useEffect(() => {
     const observerCallback: IntersectionObserverCallback = (entries, observer) => {
@@ -201,7 +228,7 @@ export default function Home() {
           {/* Core Headline - Orbitron Bold 600 with Smooth Typewriter Animation */}
           <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-white leading-[1.18] font-orbitron min-h-[70px] sm:min-h-[85px] flex items-center justify-center animate-hero-2">
             <span>
-              {typedHeadline}
+              {renderStyledHeadline(typedHeadline)}
               <span
                 className={`inline-block w-[3px] sm:w-[4px] h-[0.8em] ml-2 bg-emerald-400 align-middle -translate-y-[2px] ${
                   isTypingDone ? 'animate-cursor' : 'opacity-100'
@@ -210,19 +237,24 @@ export default function Home() {
             </span>
           </h1>
 
-          {/* Subtitle */}
-          <p className="text-sm sm:text-base md:text-lg text-zinc-400 max-w-2xl mx-auto leading-relaxed font-normal animate-hero-3">
-            Build high-performance web applications with <strong>FastAPI</strong> or <strong>Express</strong>, <strong>Next.js v16.3.5 App Router</strong>, automated migrations, and zero-configuration deployments.
-          </p>
+          {/* Core One-Line Value Proposition */}
+          <div className="space-y-1.5 max-w-4xl mx-auto animate-hero-3">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl font-medium text-zinc-200 leading-snug tracking-tight whitespace-normal md:whitespace-nowrap">
+              <span className="text-emerald-500 font-semibold font-mono">1 Command.</span> Complete Full-Stack Folder Structure & Production Stack Ready in <span className="text-zinc-100 font-semibold">1.4s</span>.
+            </p>
+            <p className="text-xs sm:text-sm text-zinc-400 font-normal">
+              FastAPI or Express • Next.js 16 • PostgreSQL • 3D Glass UI • Zero-config deploy.
+            </p>
+          </div>
 
           {/* Quick Value Clarification: What is Tiger & What does it do */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 max-w-3xl mx-auto text-left pt-1">
             <div className="p-3 rounded-lg bg-zinc-900/40 border border-zinc-800/80 animate-hero-4 hover:border-zinc-700/80 transition-colors">
               <div className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5 font-mono">
-                <span className="text-emerald-400 font-bold">01.</span> Scaffold
+                <span className="text-emerald-400 font-bold">01.</span> 1-Cmd Scaffold
               </div>
               <p className="text-[11px] text-zinc-400 mt-1 leading-snug font-sans">
-                Next.js 16.3.5 App Router + FastAPI/Express in 1.4s.
+                Full-stack folder structure ready in 1.4s.
               </p>
             </div>
             <div className="p-3 rounded-lg bg-zinc-900/40 border border-zinc-800/80 animate-hero-5 hover:border-zinc-700/80 transition-colors">
@@ -337,17 +369,16 @@ export default function Home() {
 
           {/* Action CTAs - Icons and Text perfectly aligned inline */}
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2 animate-hero-9">
-            <button
+            <GlassButton
+              size="md"
+              variant="primary"
               onClick={() => {
                 document.getElementById('terminal')?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="focus:outline-none"
             >
-              <GlassButton size="md" variant="primary">
-                <Terminal className="w-4 h-4 shrink-0" />
-                <span>Live Terminal Simulator</span>
-              </GlassButton>
-            </button>
+              <Terminal className="w-4 h-4 shrink-0" />
+              <span>Live Terminal Simulator</span>
+            </GlassButton>
             <a
               href="https://github.com/IAR-010/tiger-cli"
               target="_blank"
@@ -651,6 +682,7 @@ export default function Home() {
           <div className="space-y-2">
             <h4 className="font-mono text-zinc-300 font-medium uppercase tracking-wider text-[11px]">Resources</h4>
             <ul className="space-y-1.5 text-zinc-400">
+              <li><Link href="/docs" className="hover:text-zinc-200 transition-colors font-medium text-zinc-200">Official Doc</Link></li>
               <li><a href="https://github.com/IAR-010/tiger-cli" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-200 transition-colors">GitHub Repository</a></li>
               <li><a href="https://github.com/IAR-010/tiger-cli/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-200 transition-colors">MIT License</a></li>
               <li><a href="https://x010.tech" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-200 transition-colors">x010.tech Home</a></li>

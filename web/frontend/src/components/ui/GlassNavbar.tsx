@@ -57,9 +57,6 @@ export const GlassNavbar: React.FC<GlassNavbarProps> = ({
 
         {/* Center/Right: Clean Minimal Links */}
         <div className="hidden md:flex items-center gap-8 text-xs font-medium text-zinc-400">
-          <Link href="/docs" className="hover:text-zinc-100 transition-colors font-medium text-white flex items-center gap-1">
-            <span>Docs</span>
-          </Link>
           <a href="#terminal" onClick={(e) => scrollToSection(e, 'terminal')} className="hover:text-zinc-100 transition-colors">
             Terminal
           </a>
@@ -75,6 +72,9 @@ export const GlassNavbar: React.FC<GlassNavbarProps> = ({
           <a href="#faq" onClick={(e) => scrollToSection(e, 'faq')} className="hover:text-zinc-100 transition-colors">
             FAQ
           </a>
+          <Link href="/docs" className="hover:text-zinc-100 transition-colors font-medium text-white flex items-center gap-1">
+            <span>Doc</span>
+          </Link>
         </div>
 
         {/* Right: Actions */}
@@ -109,12 +109,12 @@ export const GlassNavbar: React.FC<GlassNavbarProps> = ({
       {/* Mobile Drawer */}
       {isOpen && (
         <div className="md:hidden border-b border-zinc-800 bg-zinc-950 px-6 py-4 space-y-3 text-xs text-zinc-300">
-          <div><Link href="/docs" onClick={() => setIsOpen(false)} className="block py-1 hover:text-white font-medium text-white">Docs</Link></div>
           <div><a href="#terminal" onClick={(e) => scrollToSection(e, 'terminal')} className="block py-1 hover:text-white">Terminal</a></div>
           <div><a href="#architecture" onClick={(e) => scrollToSection(e, 'architecture')} className="block py-1 hover:text-white">Architecture</a></div>
           <div><a href="#commands" onClick={(e) => scrollToSection(e, 'commands')} className="block py-1 hover:text-white">Commands</a></div>
           <div><a href="#benchmark" onClick={(e) => scrollToSection(e, 'benchmark')} className="block py-1 hover:text-white">Benchmark</a></div>
           <div><a href="#faq" onClick={(e) => scrollToSection(e, 'faq')} className="block py-1 hover:text-white">FAQ</a></div>
+          <div><Link href="/docs" onClick={() => setIsOpen(false)} className="block py-1 hover:text-white font-medium text-white">Doc</Link></div>
           <div className="pt-2 border-t border-zinc-800 flex gap-2">
             <a
               href="https://github.com/IAR-010/tiger-cli"
