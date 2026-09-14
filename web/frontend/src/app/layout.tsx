@@ -18,7 +18,7 @@ const shareTech = Share_Tech({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://tiger-framework.org'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://tiger.x010.tech'),
   title: {
     default: 'Tiger Framework — Next-Gen 3D Glassmorphic Full-Stack Meta-Framework',
     template: '%s | Tiger Framework',
@@ -70,12 +70,12 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://tiger-framework.org',
+    canonical: 'https://tiger.x010.tech',
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://tiger-framework.org',
+    url: 'https://tiger.x010.tech',
     siteName: 'Tiger Framework',
     title: '1 Command. Complete Full-Stack Folder Structure & Production Stack Ready in 1.4s.',
     description:
@@ -125,7 +125,7 @@ export default function RootLayout({
         operatingSystem: 'Windows, macOS, Linux',
         description:
           'Command-line based full-stack meta-framework for scaffolding FastAPI/Express backends, Next.js 16.3.5 frontends with 3D Glassmorphism, and database migrations.',
-        url: 'https://tiger-framework.org',
+        url: 'https://tiger.x010.tech',
         codeRepository: 'https://github.com/IAR-010/tiger-cli',
         license: 'https://opensource.org/licenses/MIT',
         softwareVersion: '0.1.0',
@@ -143,8 +143,8 @@ export default function RootLayout({
       {
         '@type': 'Organization',
         name: 'Tiger Framework',
-        url: 'https://tiger-framework.org',
-        logo: 'https://tiger-framework.org/logo.png',
+        url: 'https://tiger.x010.tech',
+        logo: 'https://tiger.x010.tech/logo.png',
         parentOrganization: {
           '@type': 'Organization',
           name: 'x010.tech',
