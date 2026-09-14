@@ -77,7 +77,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://tiger-framework.org',
     siteName: 'Tiger Framework',
-    title: 'Tiger Framework — Build Full-Stack Apps at the Speed of a Roar',
+    title: '1 Command. Complete Full-Stack Folder Structure & Production Stack Ready in 1.4s.',
     description:
       'High-velocity full-stack meta-framework with FastAPI/Express, PostgreSQL, Next.js 16.3.5, 3D Glassmorphic UI Kit, and autonomous Git tools. Powered by x010.tech.',
     images: [
@@ -91,9 +91,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Tiger Framework — Full-Stack Framework & CLI Toolchain',
+    title: '1 Command. Complete Full-Stack Folder Structure & Production Stack Ready in 1.4s.',
     description:
-      '1 Command. Complete Full-Stack Architecture Ready in 1.4s. FastAPI/Express, PostgreSQL, Next.js 16.3.5, 3D Glassmorphic UI Kit, and autonomous Git tools. Powered by x010.tech.',
+      'Scaffold full-stack FastAPI/Next.js 16.3.5 apps with 3D Glassmorphism, database migrations, and autonomous Git push in 1.4s. Powered by x010.tech.',
     images: ['/og-image.png'],
     creator: '@x010tech',
   },

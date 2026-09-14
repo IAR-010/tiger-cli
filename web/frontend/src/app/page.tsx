@@ -269,7 +269,7 @@ export default function Home() {
             </span>
           </h1>
 
-          {/* Core One-Line Value Proposition */}
+          {/* Core One-Line Value Proposition in Share Tech Font */}
           <div className="space-y-1.5 max-w-4xl mx-auto animate-hero-3">
             <p className="font-shareTech text-base sm:text-lg md:text-xl lg:text-2xl text-zinc-200 leading-snug tracking-wide whitespace-normal md:whitespace-nowrap">
               <span className="text-emerald-500 font-medium">1 Command.</span> Complete Full-Stack Folder Structure & Production Stack Ready in <span className="text-zinc-100 font-medium tabular-nums">{heroTime}</span>.
