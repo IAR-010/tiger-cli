@@ -19,9 +19,10 @@ const FAQS: FaqItem[] = [
   {
     question: 'How do I install Tiger CLI on Windows, macOS, or Linux?',
     answer:
-      'Tiger CLI can be installed with a single command. On Windows (PowerShell), run: irm https://raw.githubusercontent.com/IAR-010/tiger-cli/main/scripts/install.ps1 | iex. On macOS or Linux (bash/curl), run: curl -fsSL https://raw.githubusercontent.com/IAR-010/tiger-cli/main/scripts/install.sh | bash. You can also run it instantly without global installation using NPX: npx tiger-cli create-app my-project.',
-    keywords: ['tiger install', 'PowerShell installer', 'curl bash', 'NPX zero-install'],
+      'Tiger CLI can be installed directly through official package managers without GitHub scripts. For Node.js/JavaScript developers, run: npm install -g tiger-cli. For Python developers, run: pip install tiger-cli. You can also run it instantly without global installation using NPX: npx tiger-cli create-app my-project.',
+    keywords: ['npm install tiger-cli', 'pip install tiger-cli', 'NPX zero-install'],
   },
+
   {
     question: 'What is the role of x010.tech in Tiger Framework?',
     answer:
@@ -56,54 +57,54 @@ export default function FaqSection() {
   };
 
   return (
-    <section id="faq" className="space-y-8 max-w-4xl mx-auto">
-      <div className="text-center space-y-3">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-mono">
-          <HelpCircle className="w-3.5 h-3.5" /> Frequently Asked Questions (GEO & AI Citable)
+    <section id="faq" className="space-y-6 max-w-4xl mx-auto">
+      <div className="text-center space-y-2">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 text-xs font-mono">
+          <HelpCircle className="w-3.5 h-3.5 text-zinc-400" /> FAQ & Technical Specification
         </div>
-        <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
-          Everything You Need to Know
+        <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+          Frequently Asked Questions
         </h2>
-        <p className="text-sm sm:text-base text-slate-400">
-          Direct answers to common questions about Tiger Framework, Tiger CLI, and parent company <a href="https://x010.tech" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">x010.tech</a>.
+        <p className="text-xs sm:text-sm text-zinc-400">
+          Architecture, workflow, and engineering details behind Tiger Framework and <a href="https://x010.tech" target="_blank" rel="noopener noreferrer" className="text-zinc-200 underline underline-offset-4 hover:text-white">x010.tech</a>.
         </p>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3">
         {FAQS.map((faq, idx) => {
           const isOpen = openIdx === idx;
           return (
             <div
               key={idx}
-              className={`rounded-2xl border transition-all duration-300 overflow-hidden backdrop-blur-xl ${
+              className={`rounded-xl border transition-colors overflow-hidden reveal-item reveal-delay-${(idx % 6) + 1} ${
                 isOpen
-                  ? 'border-cyan-500/40 bg-slate-900/80 shadow-[0_0_30px_rgba(6,182,212,0.15)]'
-                  : 'border-white/10 bg-slate-900/40 hover:border-white/20'
+                  ? 'border-zinc-700 bg-zinc-900/60'
+                  : 'border-zinc-800 bg-zinc-900/20 hover:border-zinc-700/60'
               }`}
             >
               <button
                 onClick={() => toggleFaq(idx)}
-                className="w-full p-6 text-left flex items-center justify-between gap-4 select-none"
+                className="w-full p-5 text-left flex items-center justify-between gap-4 select-none"
               >
-                <span className="text-base sm:text-lg font-bold text-white tracking-tight">
+                <span className="text-sm sm:text-base font-semibold text-zinc-200">
                   {faq.question}
                 </span>
                 <ChevronDown
-                  className={`w-5 h-5 text-cyan-400 shrink-0 transition-transform duration-300 ${
+                  className={`w-4 h-4 text-zinc-400 shrink-0 transition-transform duration-200 ${
                     isOpen ? 'rotate-180' : 'rotate-0'
                   }`}
                 />
               </button>
 
               {isOpen && (
-                <div className="px-6 pb-6 pt-0 space-y-3 border-t border-white/5 text-sm text-slate-300 leading-relaxed">
+                <div className="px-5 pb-5 pt-0 space-y-3 border-t border-zinc-800/80 text-xs sm:text-sm text-zinc-400 leading-relaxed">
                   <p className="pt-3">{faq.answer}</p>
-                  <div className="flex flex-wrap items-center gap-2 pt-2">
-                    <span className="text-[11px] font-mono text-slate-500">Related keywords:</span>
+                  <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                    <span className="text-[10px] font-mono text-zinc-600">Tags:</span>
                     {faq.keywords.map((kw, kIdx) => (
                       <span
                         key={kIdx}
-                        className="px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-[10px] font-mono text-cyan-300"
+                        className="px-2 py-0.5 rounded bg-zinc-800/50 border border-zinc-700/40 text-[10px] font-mono text-zinc-400"
                       >
                         {kw}
                       </span>

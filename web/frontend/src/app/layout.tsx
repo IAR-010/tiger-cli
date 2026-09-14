@@ -1,5 +1,13 @@
 import type { Metadata } from 'next';
+import { Orbitron } from 'next/font/google';
 import './globals.css';
+
+const orbitron = Orbitron({
+  subsets: ['latin'],
+  weight: ['600', '700', '800'],
+  variable: '--font-orbitron',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://tiger-framework.org'),
@@ -82,8 +90,14 @@ export const metadata: Metadata = {
     creator: '@x010tech',
   },
   icons: {
-    icon: '/logo.png',
-    apple: '/logo.png',
+    icon: [
+      { url: '/logo.png', type: 'image/png' },
+      { url: '/icon.png', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/logo.png', type: 'image/png' },
+    ],
+    shortcut: '/logo.png',
   },
 };
 
@@ -175,14 +189,32 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className={`dark ${orbitron.variable}`}>
       <head>
+        <link rel="icon" href="/logo.png" type="image/png" sizes="any" />
+        <link rel="shortcut icon" href="/logo.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/logo.png" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                if ('scrollRestoration' in history) {
+                  history.scrollRestoration = 'manual';
+                }
+                if (window.location.hash) {
+                  history.replaceState(null, '', window.location.pathname + window.location.search);
+                }
+                window.scrollTo(0, 0);
+              } catch (e) {}
+            `,
+          }}
+        />
       </head>
-      <body className="bg-slate-950 text-slate-100 antialiased selection:bg-amber-500 selection:text-slate-950">
+      <body className="bg-[#09090b] text-zinc-100 antialiased selection:bg-zinc-800 selection:text-white">
         {children}
       </body>
     </html>

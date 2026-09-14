@@ -6,28 +6,28 @@ import { Check, X, Sparkles } from 'lucide-react';
 export default function FrameworkComparison() {
   const rows = [
     { feature: 'Instant Full-Stack Scaffold (FastAPI/Express + Next.js 14)', tiger: true, nextjs: false, django: false, laravel: false },
-    { feature: 'Built-in 3D Glassmorphism Hardware-Accelerated UI Kit', tiger: true, nextjs: false, django: false, laravel: false },
-    { feature: 'Autonomous Git Pipeline (tiger push auto-init & push)', tiger: true, nextjs: false, django: false, laravel: false },
-    { feature: 'Multi-DB Connector & Automated Alembic Migrations', tiger: true, nextjs: false, django: true, laravel: true },
+    { feature: 'Built-in 3D Glassmorphism UI Component Library', tiger: true, nextjs: false, django: false, laravel: false },
+    { feature: 'Autonomous Git Pipeline (tiger push auto-stage & push)', tiger: true, nextjs: false, django: false, laravel: false },
+    { feature: 'Multi-DB Connector & Automated Migrations', tiger: true, nextjs: false, django: true, laravel: true },
     { feature: 'Integrated AI Route Synthesizer & Error Diagnosis', tiger: true, nextjs: false, django: false, laravel: false },
     { feature: 'Hardened Production Nginx SSL & Docker Orchestration', tiger: true, nextjs: false, django: false, laravel: false },
-    { feature: 'Interactive In-Terminal Studio GUI (tiger studio)', tiger: true, nextjs: false, django: false, laravel: false },
-    { feature: 'Scaffold Generation Speed', tigerText: '< 2 sec', nextText: '~45 sec', djangoText: '~60 sec', laravelText: '~90 sec' },
+    { feature: 'Interactive In-Terminal Studio Dashboard', tiger: true, nextjs: false, django: false, laravel: false },
+    { feature: 'Scaffold Generation Benchmark', tigerText: '< 2 sec', nextText: '~45 sec', djangoText: '~60 sec', laravelText: '~90 sec' },
   ];
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-slate-900/50 backdrop-blur-xl overflow-hidden shadow-2xl">
-      <div className="p-6 border-b border-white/10 flex items-center justify-between">
+    <div className="rounded-xl border border-zinc-800 bg-zinc-950 overflow-hidden shadow-xl">
+      <div className="p-5 border-b border-zinc-800 flex items-center justify-between">
         <div>
-          <h3 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-cyan-400" />
-            Why Developers Choose Tiger Framework
+          <h3 className="text-sm font-semibold text-white tracking-tight flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-zinc-400" />
+            Framework Architecture & Velocity Comparison
           </h3>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-zinc-400 mt-0.5">
             Compare full-stack developer velocity against traditional frameworks.
           </p>
         </div>
-        <div className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-semibold">
+        <div className="px-2.5 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-400 text-xs font-mono">
           x010.tech benchmark
         </div>
       </div>
@@ -35,37 +35,37 @@ export default function FrameworkComparison() {
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse text-xs md:text-sm">
           <thead>
-            <tr className="border-b border-white/10 bg-slate-950/60 text-slate-400 font-mono text-xs">
-              <th className="py-4 px-6 font-medium">Capabilities</th>
-              <th className="py-4 px-6 font-bold text-cyan-400 bg-cyan-500/10 border-x border-cyan-500/20 text-center">
-                Tiger Framework 🐅
+            <tr className="border-b border-zinc-800 bg-zinc-900/40 text-zinc-400 font-mono text-xs">
+              <th className="py-3 px-5 font-medium">Capabilities</th>
+              <th className="py-3 px-5 font-semibold text-white bg-zinc-800/40 border-x border-zinc-800 text-center">
+                Tiger Framework
               </th>
-              <th className="py-4 px-6 text-center">Next.js (Manual)</th>
-              <th className="py-4 px-6 text-center">Django</th>
-              <th className="py-4 px-6 text-center">Laravel</th>
+              <th className="py-3 px-5 text-center">Next.js (Manual)</th>
+              <th className="py-3 px-5 text-center">Django</th>
+              <th className="py-3 px-5 text-center">Laravel</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/5 font-mono text-xs">
+          <tbody className="divide-y divide-zinc-800/60 font-mono text-xs">
             {rows.map((row, idx) => (
-              <tr key={idx} className="hover:bg-white/[0.02] transition-colors">
-                <td className="py-4 px-6 font-sans text-xs md:text-sm text-slate-300 font-medium">
+              <tr key={idx} className="hover:bg-zinc-900/30 transition-colors">
+                <td className="py-3.5 px-5 font-sans text-xs text-zinc-300 font-normal">
                   {row.feature}
                 </td>
-                <td className="py-4 px-6 text-center bg-cyan-500/[0.05] border-x border-cyan-500/20 font-bold text-cyan-300">
+                <td className="py-3.5 px-5 text-center bg-zinc-800/20 border-x border-zinc-800 font-medium text-white">
                   {row.tigerText ? (
-                    <span className="text-emerald-400 font-bold">{row.tigerText}</span>
+                    <span className="text-zinc-100 font-semibold">{row.tigerText}</span>
                   ) : (
-                    <Check className="w-4 h-4 mx-auto text-emerald-400" />
+                    <Check className="w-4 h-4 mx-auto text-zinc-100" />
                   )}
                 </td>
-                <td className="py-4 px-6 text-center text-slate-500">
-                  {row.nextText ? row.nextText : <X className="w-4 h-4 mx-auto text-rose-500/60" />}
+                <td className="py-3.5 px-5 text-center text-zinc-500">
+                  {row.nextText ? row.nextText : <X className="w-3.5 h-3.5 mx-auto text-zinc-600" />}
                 </td>
-                <td className="py-4 px-6 text-center text-slate-500">
-                  {row.djangoText ? row.djangoText : row.django ? <Check className="w-4 h-4 mx-auto text-slate-400" /> : <X className="w-4 h-4 mx-auto text-rose-500/60" />}
+                <td className="py-3.5 px-5 text-center text-zinc-500">
+                  {row.djangoText ? row.djangoText : row.django ? <Check className="w-3.5 h-3.5 mx-auto text-zinc-400" /> : <X className="w-3.5 h-3.5 mx-auto text-zinc-600" />}
                 </td>
-                <td className="py-4 px-6 text-center text-slate-500">
-                  {row.laravelText ? row.laravelText : row.laravel ? <Check className="w-4 h-4 mx-auto text-slate-400" /> : <X className="w-4 h-4 mx-auto text-rose-500/60" />}
+                <td className="py-3.5 px-5 text-center text-zinc-500">
+                  {row.laravelText ? row.laravelText : row.laravel ? <Check className="w-3.5 h-3.5 mx-auto text-zinc-400" /> : <X className="w-3.5 h-3.5 mx-auto text-zinc-600" />}
                 </td>
               </tr>
             ))}

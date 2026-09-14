@@ -16,18 +16,12 @@ export const GlassStats: React.FC<GlassStatsProps> = ({
   isPositive = true,
 }) => {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-lg shadow-xl">
-      <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">{label}</p>
+    <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-5">
+      <p className="text-[11px] font-mono uppercase tracking-wider text-zinc-400">{label}</p>
       <div className="mt-2 flex items-baseline justify-between">
-        <p className="text-3xl font-extrabold text-white">{value}</p>
+        <p className="text-2xl font-bold tracking-tight text-white">{value}</p>
         {change && (
-          <span
-            className={`text-xs font-bold px-2 py-0.5 rounded-full ${
-              isPositive
-                ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
-                : "bg-rose-500/20 text-rose-300 border border-rose-500/30"
-            }`}
-          >
+          <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 border border-zinc-700">
             {change}
           </span>
         )}
@@ -35,5 +29,6 @@ export const GlassStats: React.FC<GlassStatsProps> = ({
     </div>
   );
 };
+
 
 export default GlassStats;

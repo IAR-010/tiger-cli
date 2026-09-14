@@ -125,37 +125,62 @@ export default function CommandDocs() {
     ? COMMANDS_DATA
     : COMMANDS_DATA.filter((c) => c.category === selectedCategory);
 
-  const copyCommand = (id: string, text: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedId(id);
-    setTimeout(() => setCopiedId(null), 2000);
+  const copyCommand = async (id: string, text: string) => {
+    try {
+      if (navigator?.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+        setCopiedId(id);
+        setTimeout(() => setCopiedId(null), 2000);
+        return;
+      }
+    } catch {
+      // fallback
+    }
+
+    try {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      textArea.style.top = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(null), 2000);
+    } catch (e) {
+      console.error('Copy failed', e);
+    }
   };
+
 
   const getCategoryIcon = (cat: string) => {
     switch (cat) {
-      case 'Scaffold': return <Terminal className="w-4 h-4 text-amber-400" />;
-      case 'Git': return <GitBranch className="w-4 h-4 text-emerald-400" />;
-      case 'UI': return <Sparkles className="w-4 h-4 text-cyan-400" />;
-      case 'Database': return <Database className="w-4 h-4 text-blue-400" />;
-      case 'AI': return <Sparkles className="w-4 h-4 text-purple-400" />;
-      case 'Deploy': return <Server className="w-4 h-4 text-rose-400" />;
-      case 'Doctor': return <Stethoscope className="w-4 h-4 text-teal-400" />;
-      default: return <Monitor className="w-4 h-4 text-slate-400" />;
+      case 'Scaffold': return <Terminal className="w-3.5 h-3.5 text-zinc-400" />;
+      case 'Git': return <GitBranch className="w-3.5 h-3.5 text-zinc-400" />;
+      case 'UI': return <Sparkles className="w-3.5 h-3.5 text-zinc-400" />;
+      case 'Database': return <Database className="w-3.5 h-3.5 text-zinc-400" />;
+      case 'AI': return <Sparkles className="w-3.5 h-3.5 text-zinc-400" />;
+      case 'Deploy': return <Server className="w-3.5 h-3.5 text-zinc-400" />;
+      case 'Doctor': return <Stethoscope className="w-3.5 h-3.5 text-zinc-400" />;
+      default: return <Monitor className="w-3.5 h-3.5 text-zinc-400" />;
     }
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Filter Tabs */}
-      <div className="flex flex-wrap items-center justify-center gap-2 p-1.5 rounded-2xl bg-slate-900/80 border border-white/10 max-w-2xl mx-auto backdrop-blur-xl">
+      <div className="flex flex-wrap items-center justify-center gap-1.5 p-1 rounded-lg bg-zinc-900 border border-zinc-800 max-w-2xl mx-auto">
         {categories.map((cat) => (
           <button
             key={cat}
             onClick={() => setSelectedCategory(cat)}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
               selectedCategory === cat
-                ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-[0_0_20px_rgba(6,182,212,0.25)]'
-                : 'text-slate-400 hover:text-white border border-transparent'
+                ? 'bg-zinc-800 text-white font-semibold'
+                : 'text-zinc-400 hover:text-zinc-200'
             }`}
           >
             {cat}
@@ -164,44 +189,44 @@ export default function CommandDocs() {
       </div>
 
       {/* Commands Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {filteredCommands.map((cmd) => (
           <div
             key={cmd.id}
-            className="group p-6 rounded-2xl border border-white/10 bg-slate-900/50 hover:bg-slate-900/80 backdrop-blur-xl hover:border-cyan-500/30 transition-all duration-300 shadow-lg hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] flex flex-col justify-between space-y-4"
+            className="p-5 rounded-xl border border-zinc-800/80 bg-zinc-900/40 hover:bg-zinc-900/80 hover:border-zinc-700 transition-all flex flex-col justify-between space-y-4"
           >
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="inline-flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-slate-300">
+                <span className="inline-flex items-center gap-1.5 text-xs font-mono px-2 py-0.5 rounded bg-zinc-800/60 border border-zinc-700/50 text-zinc-300">
                   {getCategoryIcon(cmd.category)}
                   {cmd.category}
                 </span>
-                <span className="text-xs font-bold text-slate-400 group-hover:text-cyan-400 transition-colors">
+                <span className="text-xs font-medium text-zinc-400">
                   {cmd.name}
                 </span>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className="text-xs text-zinc-400 leading-relaxed">
                 {cmd.description}
               </p>
             </div>
 
-            <div className="space-y-2 pt-2 border-t border-white/5">
-              <div className="flex items-center justify-between bg-slate-950/90 rounded-xl px-3.5 py-2.5 border border-white/5 font-mono text-xs text-cyan-300">
+            <div className="space-y-2 pt-2 border-t border-zinc-800/60">
+              <div className="flex items-center justify-between bg-zinc-950 rounded-lg px-3 py-2 border border-zinc-800 font-mono text-xs text-zinc-200">
                 <span className="truncate">$ {cmd.example}</span>
                 <button
                   onClick={() => copyCommand(cmd.id, cmd.example)}
-                  className="ml-2 p-1 text-slate-400 hover:text-white rounded hover:bg-white/10 transition-colors shrink-0"
+                  className="ml-2 p-1 text-zinc-500 hover:text-zinc-200 rounded hover:bg-zinc-800 transition-colors shrink-0"
                   title="Copy command"
                 >
                   {copiedId === cmd.id ? (
-                    <Check className="w-3.5 h-3.5 text-emerald-400" />
+                    <Check className="w-3.5 h-3.5 text-zinc-300" />
                   ) : (
                     <Copy className="w-3.5 h-3.5" />
                   )}
                 </button>
               </div>
-              <div className="text-[11px] font-mono text-slate-400 truncate">
-                <span className="text-slate-400 font-semibold">Options:</span> {cmd.flags}
+              <div className="text-[11px] font-mono text-zinc-500 truncate">
+                <span className="text-zinc-400 font-medium">Options:</span> {cmd.flags}
               </div>
             </div>
           </div>

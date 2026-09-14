@@ -674,9 +674,9 @@ CMD ["npm", "start"]
     "lint": "next lint"
   }},
   "dependencies": {{
-    "next": "14.2.3",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "next": "^16.3.5",
+    "react": "latest",
+    "react-dom": "latest",
     "lucide-react": "^0.378.0"
   }},
   "devDependencies": {{

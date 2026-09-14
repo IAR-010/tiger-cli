@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import GlassNavbar from '@/components/ui/GlassNavbar';
 import GlassStats from '@/components/ui/GlassStats';
 import GlassButton from '@/components/ui/GlassButton';
@@ -10,373 +10,531 @@ import CommandDocs from '@/components/CommandDocs';
 import FrameworkComparison from '@/components/FrameworkComparison';
 import FaqSection from '@/components/FaqSection';
 import {
-  Sparkles,
   Terminal,
-  Layers,
   Copy,
   Check,
-  Github,
   Zap,
   ShieldCheck,
   Cpu,
   Globe,
-  Flame,
-  Code2
+  Code2,
+  ArrowRight,
+  Sparkles,
+  Server,
+  Layers,
+  ChevronRight
 } from 'lucide-react';
 
-type InstallTab = 'ps' | 'sh' | 'npx';
+const GithubIcon = ({ className = "w-4 h-4" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+    <path d="M9 18c-4.51 2-5-2-7-2" />
+  </svg>
+);
+
+type InstallTab = 'npm' | 'pip' | 'npx';
 
 export default function Home() {
-  const [installTab, setInstallTab] = useState<InstallTab>('ps');
+  // Always keep user on Hero section on reload/refresh
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'manual';
+      }
+      if (window.location.hash) {
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+      window.scrollTo(0, 0);
+    }
+  }, []);
+
+  const [installTab, setInstallTab] = useState<InstallTab>('npm');
   const [copiedInstall, setCopiedInstall] = useState(false);
 
   const installCommands = {
-    ps: 'irm https://raw.githubusercontent.com/IAR-010/tiger-cli/main/scripts/install.ps1 | iex',
-    sh: 'curl -fsSL https://raw.githubusercontent.com/IAR-010/tiger-cli/main/scripts/install.sh | bash',
+    npm: 'npm install -g tiger-cli',
+    pip: 'pip install tiger-cli',
     npx: 'npx tiger-cli create-app my-saas',
   };
 
-  const handleCopyInstall = () => {
-    navigator.clipboard.writeText(installCommands[installTab]);
-    setCopiedInstall(true);
-    setTimeout(() => setCopiedInstall(false), 2000);
+  const copyToClipboard = async (text: string) => {
+    try {
+      if (navigator?.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    } catch (err) {
+      console.warn('Navigator clipboard failed, using fallback', err);
+    }
+
+    try {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      textArea.style.top = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      const successful = document.execCommand('copy');
+      document.body.removeChild(textArea);
+      return successful;
+    } catch (err) {
+      console.error('Fallback copy failed', err);
+      return false;
+    }
   };
 
+  const handleCopyInstall = async () => {
+    const success = await copyToClipboard(installCommands[installTab]);
+    if (success) {
+      setCopiedInstall(true);
+      setTimeout(() => setCopiedInstall(false), 2000);
+    }
+  };
+
+
+
+  const fullHeadline = 'Full-Stack Framework & CLI Toolchain.';
+  const [typedHeadline, setTypedHeadline] = useState('');
+  const [isTypingDone, setIsTypingDone] = useState(false);
+
+  // Typewriter effect for Orbitron Headline
+  useEffect(() => {
+    let index = 0;
+    const startTimer = setTimeout(() => {
+      const interval = setInterval(() => {
+        index++;
+        if (index <= fullHeadline.length) {
+          setTypedHeadline(fullHeadline.slice(0, index));
+        } else {
+          clearInterval(interval);
+          setIsTypingDone(true);
+        }
+      }, 48);
+
+      return () => clearInterval(interval);
+    }, 180);
+
+    return () => clearTimeout(startTimer);
+  }, []);
+
+  // Scroll Reveal Intersection Observer setup for elements below the fold
+  useEffect(() => {
+    const observerCallback: IntersectionObserverCallback = (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          entry.target.classList.add('reveal-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, {
+      root: null,
+      threshold: 0.1,
+      rootMargin: '0px 0px -30px 0px',
+    });
+
+    const elements = document.querySelectorAll('.reveal-item, .reveal-init');
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="relative min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-950 via-slate-900 to-black text-slate-100 overflow-x-hidden">
-      {/* Background Glowing Ambient Orbs */}
-      <div className="absolute -top-48 left-1/2 -translate-x-1/2 w-[850px] h-[550px] bg-gradient-to-tr from-cyan-500/20 via-sky-500/10 to-amber-500/15 blur-[140px] pointer-events-none -z-10 animate-pulse-glow" />
-      <div className="absolute top-[800px] -left-48 w-[600px] h-[600px] bg-purple-500/10 blur-[150px] pointer-events-none -z-10" />
-      <div className="absolute top-[1600px] -right-48 w-[600px] h-[600px] bg-cyan-500/10 blur-[150px] pointer-events-none -z-10" />
-
-      {/* Top Banner with Parent Backlink */}
-      <div className="w-full bg-gradient-to-r from-cyan-950/60 via-slate-900/90 to-amber-950/60 border-b border-white/5 py-2 px-4 text-center text-xs text-slate-300 backdrop-blur-md fixed top-0 inset-x-0 z-50">
-        <span className="inline-flex items-center gap-2">
-          <span className="px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-mono text-[10px] font-bold border border-cyan-500/30">
-            RELEASE v0.1.0
-          </span>
-          <span>Tiger Framework is now live & open source!</span>
-          <span className="hidden sm:inline text-slate-500">•</span>
-          <span className="hidden sm:inline text-slate-400">An open innovation by</span>
-          <a
-            href="https://x010.tech"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-bold text-cyan-400 hover:text-cyan-300 underline decoration-cyan-500/40 underline-offset-4 hover:decoration-cyan-400 transition-colors inline-flex items-center gap-1"
-          >
-            x010.tech ↗
-          </a>
-        </span>
-      </div>
-
-      {/* Glass Navigation Bar */}
+    <div className="min-h-screen bg-[#09090b] text-zinc-100 selection:bg-zinc-800 selection:text-white">
+      {/* Top Fixed Full-Width Minimal Navbar */}
       <GlassNavbar />
 
-      {/* Main Content Area */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 pt-36 pb-24 space-y-32">
+      {/* Main Container */}
+      <main className="max-w-7xl mx-auto px-6 pt-32 pb-24 space-y-28">
         {/* ============================================================ */}
-        {/* 1. HERO SECTION */}
+        {/* 1. HERO SECTION - CLEAN, SERIOUS & MONOCHROME */}
         {/* ============================================================ */}
-        <section className="text-center space-y-8 max-w-4xl mx-auto pt-6">
-          {/* 3D Glowing Tiger Logo Badge */}
-          <div className="flex justify-center">
-            <div className="relative group cursor-pointer">
-              <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-amber-500 rounded-3xl blur-xl opacity-50 group-hover:opacity-80 transition duration-500 animate-pulse-glow" />
-              <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-3xl bg-slate-950/80 border border-cyan-500/40 p-3.5 shadow-[0_0_50px_rgba(6,182,212,0.4)] backdrop-blur-2xl hover:scale-105 transition-transform duration-300 flex items-center justify-center">
-                <img
-                  src="/logo.png"
-                  alt="Tiger Framework Logo"
-                  className="w-full h-full object-contain drop-shadow-[0_0_25px_rgba(6,182,212,0.7)] animate-float"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Badge & Parent Pill */}
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-xs font-mono font-semibold tracking-wide shadow-[0_0_20px_rgba(6,182,212,0.2)]">
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              Full-Stack Meta-Framework & CLI Toolchain
-            </div>
+        <section className="text-center space-y-8 max-w-4xl mx-auto pt-4">
+          {/* Subtle Project & Parent Label */}
+          <div className="flex items-center justify-center gap-2 animate-hero-1">
             <a
               href="https://x010.tech"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs font-mono font-semibold hover:bg-amber-500/20 transition-all"
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-zinc-800 bg-zinc-900/60 text-zinc-300 text-xs font-mono hover:border-zinc-700 transition-colors"
             >
-              <Zap className="w-3.5 h-3.5 text-amber-400" />
-              Powered by x010.tech
+              <span className="w-1.5 h-1.5 rounded-full bg-zinc-400" />
+              <span>tiger-cli v0.1.0</span>
+              <span className="text-zinc-600">|</span>
+              <span className="text-zinc-400">by x010.tech</span>
+              <ArrowRight className="w-3 h-3 text-zinc-500" />
             </a>
           </div>
 
-          {/* Hero Headline */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight leading-[1.1] text-white">
-            Build Full-Stack Apps at the{' '}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-sky-200 to-amber-400">
-              Speed of a Roar
+          {/* Core Headline - Orbitron Bold 600 with Smooth Typewriter Animation */}
+          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-white leading-[1.18] font-orbitron min-h-[70px] sm:min-h-[85px] flex items-center justify-center animate-hero-2">
+            <span>
+              {typedHeadline}
+              <span
+                className={`inline-block w-[3px] sm:w-[4px] h-[0.8em] ml-2 bg-emerald-400 align-middle -translate-y-[2px] ${
+                  isTypingDone ? 'animate-cursor' : 'opacity-100'
+                }`}
+              />
             </span>
           </h1>
 
-          {/* Hero Subtitle */}
-          <p className="text-base sm:text-lg md:text-xl text-slate-300/90 max-w-2xl mx-auto leading-relaxed">
-            The command-line full-stack framework combining <strong>Python (FastAPI)</strong> or <strong>Node.js (Express)</strong> with <strong>Next.js 14 App Router</strong>, automated Git pipelines, Alembic migrations, and 3D Glassmorphism.
+          {/* Subtitle */}
+          <p className="text-sm sm:text-base md:text-lg text-zinc-400 max-w-2xl mx-auto leading-relaxed font-normal animate-hero-3">
+            Build high-performance web applications with <strong>FastAPI</strong> or <strong>Express</strong>, <strong>Next.js v16.3.5 App Router</strong>, automated migrations, and zero-configuration deployments.
           </p>
 
-          {/* 1-Click Interactive Installer Switcher Box */}
-          <div id="install" className="max-w-xl mx-auto rounded-2xl border border-cyan-500/30 bg-slate-950/90 backdrop-blur-2xl p-4 shadow-[0_0_40px_rgba(6,182,212,0.2)] space-y-3">
-            <div className="flex items-center justify-between border-b border-white/5 pb-2.5">
-              <div className="flex items-center gap-1 bg-slate-900/80 p-1 rounded-xl border border-white/5 text-xs font-mono">
+          {/* Quick Value Clarification: What is Tiger & What does it do */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 max-w-3xl mx-auto text-left pt-1">
+            <div className="p-3 rounded-lg bg-zinc-900/40 border border-zinc-800/80 animate-hero-4 hover:border-zinc-700/80 transition-colors">
+              <div className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5 font-mono">
+                <span className="text-emerald-400 font-bold">01.</span> Scaffold
+              </div>
+              <p className="text-[11px] text-zinc-400 mt-1 leading-snug font-sans">
+                Next.js 16.3.5 App Router + FastAPI/Express in 1.4s.
+              </p>
+            </div>
+            <div className="p-3 rounded-lg bg-zinc-900/40 border border-zinc-800/80 animate-hero-5 hover:border-zinc-700/80 transition-colors">
+              <div className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5 font-mono">
+                <span className="text-emerald-400 font-bold">02.</span> Database
+              </div>
+              <p className="text-[11px] text-zinc-400 mt-1 leading-snug font-sans">
+                PostgreSQL 16, SQLAlchemy & automated Alembic migrations.
+              </p>
+            </div>
+            <div className="p-3 rounded-lg bg-zinc-900/40 border border-zinc-800/80 animate-hero-6 hover:border-zinc-700/80 transition-colors">
+              <div className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5 font-mono">
+                <span className="text-emerald-400 font-bold">03.</span> 1-Click Push
+              </div>
+              <p className="text-[11px] text-zinc-400 mt-1 leading-snug font-sans">
+                Autonomous <code className="text-zinc-300">tiger push</code>, Docker Compose & Nginx SSL.
+              </p>
+            </div>
+            <div className="p-3 rounded-lg bg-zinc-900/40 border border-zinc-800/80 animate-hero-7 hover:border-zinc-700/80 transition-colors">
+              <div className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5 font-mono">
+                <span className="text-emerald-400 font-bold">04.</span> 3D UI Kit
+              </div>
+              <p className="text-[11px] text-zinc-400 mt-1 leading-snug font-sans">
+                Hardware-accelerated 3D Glassmorphism components.
+              </p>
+            </div>
+          </div>
+
+
+          {/* ============================================================ */}
+          {/* macOS STYLE INSTALLATION TERMINAL BOX */}
+          {/* ============================================================ */}
+          <div id="install" className="max-w-2xl mx-auto rounded-xl border border-zinc-800 bg-zinc-950 shadow-2xl overflow-hidden text-left spotlight-card transition-all duration-300 animate-hero-8">
+            {/* macOS Window Title Bar */}
+            <div className="flex items-center justify-between px-4 py-2.5 bg-zinc-900/90 border-b border-zinc-800">
+              <div className="flex items-center gap-2">
+                {/* 3 macOS Window Dots */}
+                <div className="flex items-center gap-1.5">
+                  <span className="w-3 h-3 rounded-full bg-[#ff5f56] border border-[#e0443e] inline-block hover:opacity-80 transition-opacity cursor-pointer" />
+                  <span className="w-3 h-3 rounded-full bg-[#ffbd2e] border border-[#dea123] inline-block hover:opacity-80 transition-opacity cursor-pointer" />
+                  <span className="w-3 h-3 rounded-full bg-[#27c93f] border border-[#1aab29] inline-block hover:opacity-80 transition-opacity cursor-pointer" />
+                </div>
+                <span className="ml-3 text-xs font-mono text-zinc-400 flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-zinc-500 animate-pulse" />
+                  terminal — zsh
+                </span>
+              </div>
+
+              {/* OS / Package Switcher Tabs */}
+              <div className="flex items-center gap-1 bg-zinc-950 p-0.5 rounded-md border border-zinc-800 text-[11px] font-mono">
                 <button
-                  onClick={() => setInstallTab('ps')}
-                  className={installTab === 'ps' ? 'px-3 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/30' : 'px-3 py-1 rounded-lg text-slate-400 hover:text-white'}
+                  onClick={() => setInstallTab('npm')}
+                  className={`px-2.5 py-1 rounded transition-colors ${
+                    installTab === 'npm'
+                      ? 'bg-zinc-800 text-white font-medium shadow-sm'
+                      : 'text-zinc-500 hover:text-zinc-300'
+                  }`}
                 >
-                  PowerShell (Win)
+                  NPM
                 </button>
                 <button
-                  onClick={() => setInstallTab('sh')}
-                  className={installTab === 'sh' ? 'px-3 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/30' : 'px-3 py-1 rounded-lg text-slate-400 hover:text-white'}
+                  onClick={() => setInstallTab('pip')}
+                  className={`px-2.5 py-1 rounded transition-colors ${
+                    installTab === 'pip'
+                      ? 'bg-zinc-800 text-white font-medium shadow-sm'
+                      : 'text-zinc-500 hover:text-zinc-300'
+                  }`}
                 >
-                  curl (Mac/Linux)
+                  PIP (Python)
                 </button>
                 <button
                   onClick={() => setInstallTab('npx')}
-                  className={installTab === 'npx' ? 'px-3 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/30' : 'px-3 py-1 rounded-lg text-slate-400 hover:text-white'}
+                  className={`px-2.5 py-1 rounded transition-colors ${
+                    installTab === 'npx'
+                      ? 'bg-zinc-800 text-white font-medium shadow-sm'
+                      : 'text-zinc-500 hover:text-zinc-300'
+                  }`}
                 >
-                  NPX (No Install)
+                  NPX (Instant)
                 </button>
               </div>
-
-              <span className="text-[11px] font-mono text-emerald-400 flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5" /> Verified
-              </span>
             </div>
 
-            {/* Install Command Display & Copy */}
-            <div className="flex items-center justify-between gap-3 bg-slate-900/90 rounded-xl px-4 py-3 border border-white/5 text-xs sm:text-sm font-mono text-cyan-300 overflow-x-auto">
-              <span className="text-slate-500 select-none">$</span>
-              <span className="truncate flex-1 text-left">{installCommands[installTab]}</span>
+            {/* Terminal Command Line Output */}
+            <div className="p-4 bg-zinc-950 flex items-center justify-between gap-4 font-mono text-xs sm:text-sm">
+              <div className="flex items-center gap-3 overflow-x-auto text-zinc-200">
+                <span className="text-zinc-500 select-none">$</span>
+                <span className="truncate font-medium">{installCommands[installTab]}</span>
+                <span className="w-2 h-4 bg-zinc-400 inline-block animate-cursor" />
+              </div>
+
               <button
                 onClick={handleCopyInstall}
-                className="shrink-0 p-1.5 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 transition-all flex items-center gap-1.5 text-xs font-mono font-medium"
+                className="shrink-0 px-3 py-1.5 rounded-md bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 active:scale-95 transition-all flex items-center gap-1.5 text-xs font-mono"
               >
                 {copiedInstall ? (
                   <>
-                    <Check className="w-3.5 h-3.5 text-emerald-400" /> Copied!
+                    <Check className="w-3.5 h-3.5 text-zinc-100" /> Copied
                   </>
                 ) : (
                   <>
-                    <Copy className="w-3.5 h-3.5" /> Copy
+                    <Copy className="w-3.5 h-3.5 text-zinc-400" /> Copy
                   </>
                 )}
               </button>
             </div>
           </div>
 
-          {/* Action CTAs */}
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-            <a href="#terminal">
-              <GlassButton size="lg" variant="primary">
-                <Terminal className="w-4 h-4 mr-2" /> Try Live Terminal
+          {/* Action CTAs - Icons and Text perfectly aligned inline */}
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-2 animate-hero-9">
+            <button
+              onClick={() => {
+                document.getElementById('terminal')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="focus:outline-none"
+            >
+              <GlassButton size="md" variant="primary">
+                <Terminal className="w-4 h-4 shrink-0" />
+                <span>Live Terminal Simulator</span>
               </GlassButton>
-            </a>
+            </button>
             <a
               href="https://github.com/IAR-010/tiger-cli"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <GlassButton size="lg" variant="secondary">
-                <Github className="w-4 h-4 mr-2" /> Star on GitHub
+              <GlassButton size="md" variant="secondary">
+                <GithubIcon className="w-4 h-4 shrink-0" />
+                <span>Star on GitHub</span>
               </GlassButton>
             </a>
           </div>
         </section>
 
+
         {/* ============================================================ */}
-        {/* 2. LIVE METRICS BAR */}
+        {/* 2. LIVE METRICS BAR (CLEAN SLATE MONOCHROME WITH HOVER) */}
         {/* ============================================================ */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <GlassStats label="Scaffold Velocity" value="< 2 sec" change="10x Faster" isPositive={true} />
-          <GlassStats label="Async API Latency" value="1.8 ms" change="FastAPI Engine" isPositive={true} />
-          <GlassStats label="3D UI Components" value="5 Injected" change="Tailwind CSS" isPositive={true} />
-          <GlassStats label="Test Health Score" value="100%" change="12/12 Automated" isPositive={true} />
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="spotlight-card rounded-xl reveal-item reveal-delay-1">
+            <GlassStats label="Scaffold Velocity" value="< 2 sec" change="10x Faster" isPositive={true} />
+          </div>
+          <div className="spotlight-card rounded-xl reveal-item reveal-delay-2">
+            <GlassStats label="Async API Latency" value="1.8 ms" change="FastAPI Engine" isPositive={true} />
+          </div>
+          <div className="spotlight-card rounded-xl reveal-item reveal-delay-3">
+            <GlassStats label="UI Components" value="5 Injected" change="Tailwind 3D" isPositive={true} />
+          </div>
+          <div className="spotlight-card rounded-xl reveal-item reveal-delay-4">
+            <GlassStats label="Test Coverage" value="100%" change="12/12 Automated" isPositive={true} />
+          </div>
         </section>
 
         {/* ============================================================ */}
-        {/* 3. INTERACTIVE TERMINAL SIMULATOR */}
+        {/* 3. INTERACTIVE macOS TERMINAL SIMULATOR */}
         {/* ============================================================ */}
-        <section id="terminal" className="space-y-6">
-          <div className="text-center space-y-3 max-w-2xl mx-auto">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-mono">
-              <Terminal className="w-3.5 h-3.5" /> Live Browser Terminal Demo
+        <section id="terminal" className="space-y-4">
+          <div className="text-left space-y-1 reveal-item reveal-delay-1">
+            <div className="text-xs font-mono text-zinc-400 uppercase tracking-wider">
+              Interactive Execution
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
-              Experience the Terminal Powerhouse
+            <h2 className="text-2xl font-bold text-white tracking-tight">
+              In-Browser Terminal Engine
             </h2>
-            <p className="text-sm sm:text-base text-slate-400">
-              Test real CLI workflows right inside your browser without installing anything.
+            <p className="text-xs sm:text-sm text-zinc-400">
+              Simulate actual Tiger CLI workflows directly inside your browser without installing anything.
             </p>
           </div>
 
-          <TerminalSimulator />
+          <div className="reveal-item reveal-delay-2">
+            <TerminalSimulator />
+          </div>
         </section>
 
         {/* ============================================================ */}
-        {/* 4. 3D GLASSMORPHIC PLAYGROUND */}
+        {/* 4. ARCHITECTURE & SIX PILLARS */}
         {/* ============================================================ */}
-        <section id="playground" className="space-y-6">
-          <div className="text-center space-y-3 max-w-2xl mx-auto">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-mono">
-              <Layers className="w-3.5 h-3.5" /> Realtime 3D Design Engine
+        <section id="architecture" className="space-y-6">
+          <div className="text-left space-y-1 reveal-item">
+            <div className="text-xs font-mono text-zinc-400 uppercase tracking-wider">
+              Core Capabilities
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
-              Next-Gen 3D Glassmorphism Playground
+            <h2 className="text-2xl font-bold text-white tracking-tight">
+              Engineered for Complete Lifecycle Velocity
             </h2>
-            <p className="text-sm sm:text-base text-slate-400">
-              Adjust backdrop blur, surface translucency, and reactive specular lighting in realtime. Injected directly into your app via <code className="text-cyan-300 font-mono">tiger make:ui</code>.
+            <p className="text-xs sm:text-sm text-zinc-400">
+              Everything required to go from project inception to production infrastructure in one unified engine.
             </p>
           </div>
 
-          <Playground3D />
-        </section>
-
-        {/* ============================================================ */}
-        {/* 5. SIX PILLARS OF TIGER FRAMEWORK */}
-        {/* ============================================================ */}
-        <section className="space-y-8">
-          <div className="text-center space-y-3 max-w-2xl mx-auto">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-mono">
-              <Flame className="w-3.5 h-3.5" /> Complete Developer Ecosystem
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
-              Engineered for End-to-End Velocity
-            </h2>
-            <p className="text-sm sm:text-base text-slate-400">
-              Everything you need to go from an idea to production deployment in one unified framework.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
               {
-                icon: <Zap className="w-6 h-6 text-amber-400" />,
+                icon: <Zap className="w-5 h-5 text-zinc-300" />,
                 title: 'Instant Scaffolding',
                 cmd: 'tiger create-app',
                 desc: 'Generate complete projects with FastAPI/Express, PostgreSQL/MySQL, and Next.js 14 in under two seconds.',
               },
               {
-                icon: <Code2 className="w-6 h-6 text-cyan-400" />,
+                icon: <Code2 className="w-5 h-5 text-zinc-300" />,
                 title: '3D UI Component Library',
                 cmd: 'tiger make:ui',
                 desc: 'Inject GlassCard, GlassNavbar, GlassButton, GlassModal, and GlassStats with hardware-accelerated transforms.',
               },
               {
-                icon: <Globe className="w-6 h-6 text-emerald-400" />,
+                icon: <Globe className="w-5 h-5 text-zinc-300" />,
                 title: 'Autonomous Git Pipeline',
                 cmd: 'tiger push',
                 desc: 'Single command repository initialization, file staging, commit generation, and remote push to GitHub.',
               },
               {
-                icon: <Cpu className="w-6 h-6 text-blue-400" />,
+                icon: <Cpu className="w-5 h-5 text-zinc-300" />,
                 title: 'Database & Migrations',
                 cmd: 'tiger db init | migrate',
                 desc: 'Automatic connection pooling configuration in .env and Alembic schema synchronization.',
               },
               {
-                icon: <Sparkles className="w-6 h-6 text-purple-400" />,
-                title: 'Integrated AI Co-Pilot',
+                icon: <Sparkles className="w-5 h-5 text-zinc-300" />,
+                title: 'Integrated AI Synthesizer',
                 cmd: 'tiger ai route | debug',
                 desc: 'Synthesize FastAPI/Express routes from plain English and diagnose runtime stack traces automatically.',
               },
               {
-                icon: <ShieldCheck className="w-6 h-6 text-rose-400" />,
-                title: 'Hardened Deployment',
+                icon: <Server className="w-5 h-5 text-zinc-300" />,
+                title: 'Production Deployments',
                 cmd: 'tiger deploy nginx | docker',
                 desc: 'Production-ready Nginx SSL reverse proxies, multi-stage Dockerfiles, and automated GitHub Actions CI/CD.',
               },
             ].map((pillar, idx) => (
               <div
                 key={idx}
-                className="p-6 rounded-2xl border border-white/10 bg-slate-900/40 hover:bg-slate-900/80 backdrop-blur-xl hover:border-cyan-500/30 transition-all duration-300 space-y-4 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)]"
+                className={`spotlight-card p-5 rounded-xl transition-all duration-200 space-y-3 reveal-item reveal-delay-${(idx % 6) + 1}`}
               >
                 <div className="flex items-center justify-between">
-                  <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">{pillar.icon}</div>
-                  <span className="font-mono text-xs px-2.5 py-1 rounded-lg bg-slate-950/80 border border-white/5 text-cyan-300">
+                  <div className="p-2 rounded-lg bg-zinc-800/60 border border-zinc-700/50">{pillar.icon}</div>
+                  <span className="font-mono text-xs px-2 py-0.5 rounded bg-zinc-950 border border-zinc-800 text-zinc-300">
                     {pillar.cmd}
                   </span>
                 </div>
-                <h3 className="text-lg font-bold text-white">{pillar.title}</h3>
-                <p className="text-xs text-slate-300 leading-relaxed">{pillar.desc}</p>
+                <h3 className="text-sm font-semibold text-white">{pillar.title}</h3>
+                <p className="text-xs text-zinc-400 leading-relaxed">{pillar.desc}</p>
               </div>
             ))}
           </div>
         </section>
 
+
         {/* ============================================================ */}
-        {/* 6. FULL COMMAND DOCUMENTATION MATRIX */}
+        {/* 5. 3D COMPONENT INSPECTOR & PLAYGROUND */}
         {/* ============================================================ */}
-        <section id="commands" className="space-y-6">
-          <div className="text-center space-y-3 max-w-2xl mx-auto">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-mono">
-              <Terminal className="w-3.5 h-3.5" /> Command Reference Matrix
+        <section className="space-y-4">
+          <div className="text-left space-y-1 reveal-item">
+            <div className="text-xs font-mono text-zinc-400 uppercase tracking-wider">
+              UI System
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
-              Comprehensive CLI Documentation
+            <h2 className="text-2xl font-bold text-white tracking-tight">
+              3D Glassmorphic Component Playground
             </h2>
-            <p className="text-sm sm:text-base text-slate-400">
-              Explore commands, flags, and production parameters available in Tiger CLI.
+            <p className="text-xs sm:text-sm text-zinc-400">
+              Inspect responsive perspective transforms, opacity levels, and component states.
             </p>
           </div>
 
-          <CommandDocs />
+          <div className="reveal-item reveal-delay-2">
+            <Playground3D />
+          </div>
         </section>
 
         {/* ============================================================ */}
-        {/* 7. BENCHMARK & COMPARISON */}
+        {/* 6. COMMAND DOCUMENTATION MATRIX */}
         {/* ============================================================ */}
-        <section id="comparison" className="space-y-6">
-          <div className="text-center space-y-3 max-w-2xl mx-auto">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono">
-              <Sparkles className="w-3.5 h-3.5" /> Framework Benchmark
+        <section id="commands" className="space-y-4">
+          <div className="text-left space-y-1 reveal-item">
+            <div className="text-xs font-mono text-zinc-400 uppercase tracking-wider">
+              CLI Reference
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
-              Architectural Comparison
+            <h2 className="text-2xl font-bold text-white tracking-tight">
+              Complete Command Matrix
             </h2>
-            <p className="text-sm sm:text-base text-slate-400">
-              See how Tiger Framework delivers 10x velocity compared to fragmented stacks.
+            <p className="text-xs sm:text-sm text-zinc-400">
+              Explore commands, arguments, and deployment flags available across the toolchain.
             </p>
           </div>
 
-          <FrameworkComparison />
+          <div className="reveal-item reveal-delay-2">
+            <CommandDocs />
+          </div>
         </section>
 
         {/* ============================================================ */}
-        {/* 8. GEO & SEO FAQ KNOWLEDGE SECTION */}
+        {/* 7. ARCHITECTURAL COMPARISON */}
         {/* ============================================================ */}
-        <FaqSection />
-
-        {/* ============================================================ */}
-        {/* 9. OPEN SOURCE & COMMUNITY CALLOUT */}
-        {/* ============================================================ */}
-        <section className="rounded-3xl border border-cyan-500/30 bg-gradient-to-b from-slate-900/90 via-slate-950 to-black p-8 sm:p-12 text-center space-y-6 shadow-[0_0_60px_rgba(6,182,212,0.15)] relative overflow-hidden">
-          <div className="w-20 h-20 mx-auto rounded-2xl bg-slate-900 border border-cyan-500/40 p-2 shadow-[0_0_30px_rgba(6,182,212,0.3)]">
-            <img src="/logo.png" alt="Tiger Logo" className="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(6,182,212,0.6)]" />
-          </div>
-          <div className="max-w-2xl mx-auto space-y-3">
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
-              Open Source. Built for the Community.
+        <section id="benchmark" className="space-y-4">
+          <div className="text-left space-y-1 reveal-item">
+            <div className="text-xs font-mono text-zinc-400 uppercase tracking-wider">
+              Industry Standard Benchmark
+            </div>
+            <h2 className="text-2xl font-bold text-white tracking-tight">
+              Architectural & Velocity Benchmark
             </h2>
-            <p className="text-sm sm:text-base text-slate-300">
-              Tiger Framework is 100% open source under the MIT License, hosted on GitHub under the <strong>IAR-010</strong> organization and proudly powered by <strong>x010.tech</strong>.
+            <p className="text-xs sm:text-sm text-zinc-400">
+              Real-world comparison of scaffolding time and out-of-the-box capabilities.
             </p>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+
+          <div className="reveal-item reveal-delay-2">
+            <FrameworkComparison />
+          </div>
+        </section>
+
+        {/* ============================================================ */}
+        {/* 8. GEO & SEO FAQ SECTION */}
+        {/* ============================================================ */}
+        <div className="reveal-item">
+          <FaqSection />
+        </div>
+
+        {/* ============================================================ */}
+        {/* 9. OPEN SOURCE & REPOSITORY BANNER */}
+        {/* ============================================================ */}
+        <section className="rounded-xl border border-zinc-800 bg-zinc-950 p-8 sm:p-12 text-center space-y-5 reveal-item">
+          <div className="w-14 h-14 mx-auto rounded-xl bg-zinc-900 border border-zinc-800 p-2 flex items-center justify-center">
+            <img src="/logo.png" alt="Tiger Logo" className="w-full h-full object-contain" />
+          </div>
+          <div className="max-w-2xl mx-auto space-y-2">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+              Open Source. Engineered for Developers.
+            </h2>
+            <p className="text-xs sm:text-sm text-zinc-400">
+              Tiger Framework is 100% open source under the MIT License, maintained on GitHub by <strong>IAR-010</strong> and backed by <strong>x010.tech</strong>.
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <a
               href="https://github.com/IAR-010/tiger-cli"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <GlassButton size="lg" variant="primary">
-                <Github className="w-4 h-4 mr-2" /> View on GitHub (IAR-010/tiger-cli)
+              <GlassButton size="md" variant="primary">
+                <GithubIcon className="w-4 h-4 mr-2" /> View GitHub Repository
               </GlassButton>
             </a>
             <a
@@ -384,7 +542,7 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <GlassButton size="lg" variant="secondary">
+              <GlassButton size="md" variant="secondary">
                 Visit x010.tech ↗
               </GlassButton>
             </a>
@@ -393,128 +551,71 @@ export default function Home() {
       </main>
 
       {/* ============================================================ */}
-      {/* 9. PRODUCTION FOOTER WITH PROMINENT PARENT BACKLINK */}
+      {/* 10. ENTERPRISE MINIMAL FOOTER */}
       {/* ============================================================ */}
-      <footer className="border-t border-white/10 bg-slate-950/90 backdrop-blur-2xl py-12 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
-          {/* Col 1: Brand & Parent Company */}
-          <div className="space-y-4 md:col-span-2">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-slate-900 border border-cyan-500/30 p-1 flex items-center justify-center">
+      <footer className="border-t border-zinc-800/80 bg-zinc-950 py-12 px-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-10 text-xs">
+          {/* Brand Col */}
+          <div className="space-y-3 md:col-span-2">
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-lg bg-zinc-900 border border-zinc-800 p-1 flex items-center justify-center">
                 <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
               </div>
-              <span className="text-lg font-black tracking-wider text-white">
-                TIGER <span className="text-cyan-400 font-light">FRAMEWORK</span>
+              <span className="text-sm font-semibold tracking-wider text-white uppercase">
+                Tiger <span className="text-zinc-500 font-normal">Framework</span>
               </span>
             </div>
-            <p className="text-xs text-slate-400 max-w-sm leading-relaxed">
-              Command-line based full-stack meta-framework designed to accelerate project setup, API design, version control, and deployment.
+            <p className="text-zinc-400 max-w-sm leading-relaxed text-xs">
+              Unified command-line meta-framework designed to accelerate project scaffolding, database migrations, and autonomous deployments.
             </p>
-            {/* Prominent x010.tech Parent Company Backlink Card */}
-            <div className="p-3.5 rounded-xl bg-slate-900/80 border border-cyan-500/20 max-w-sm flex items-center justify-between">
-              <div>
-                <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400">Parent Company</div>
-                <a
-                  href="https://x010.tech"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-bold text-cyan-300 hover:text-cyan-200 transition-colors flex items-center gap-1"
-                >
-                  x010.tech ↗
-                </a>
-              </div>
-              <span className="px-2.5 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-[10px] font-mono border border-cyan-500/30">
-                Official Innovation
-              </span>
+            <div className="pt-2">
+              <a
+                href="https://x010.tech"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white font-mono text-[11px] transition-colors"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-zinc-400" />
+                Parent Company: x010.tech ↗
+              </a>
             </div>
           </div>
 
-          {/* Col 2: Navigation Links */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-mono uppercase tracking-wider text-white font-bold">Ecosystem</h4>
-            <ul className="space-y-2 text-xs text-slate-400">
-              <li><a href="#terminal" className="hover:text-cyan-300 transition-colors">Terminal Demo</a></li>
-              <li><a href="#playground" className="hover:text-cyan-300 transition-colors">3D Glassmorphic UI Kit</a></li>
-              <li><a href="#commands" className="hover:text-cyan-300 transition-colors">CLI Command Matrix</a></li>
-              <li><a href="#comparison" className="hover:text-cyan-300 transition-colors">Performance Benchmark</a></li>
+          {/* Links Col 1 */}
+          <div className="space-y-2">
+            <h4 className="font-mono text-zinc-300 font-medium uppercase tracking-wider text-[11px]">Toolchain</h4>
+            <ul className="space-y-1.5 text-zinc-400">
+              <li><a href="#terminal" className="hover:text-zinc-200 transition-colors">Terminal Simulator</a></li>
+              <li><a href="#architecture" className="hover:text-zinc-200 transition-colors">Core Capabilities</a></li>
+              <li><a href="#commands" className="hover:text-zinc-200 transition-colors">CLI Command Reference</a></li>
+              <li><a href="#benchmark" className="hover:text-zinc-200 transition-colors">Framework Benchmark</a></li>
             </ul>
           </div>
 
-          {/* Col 3: Open Source & Community */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-mono uppercase tracking-wider text-white font-bold">Community & Code</h4>
-            <ul className="space-y-2 text-xs text-slate-400">
-              <li>
-                <a
-                  href="https://github.com/IAR-010/tiger-cli"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-white transition-colors flex items-center gap-1"
-                >
-                  GitHub: IAR-010/tiger-cli ↗
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/IAR-010/tiger-cli/blob/main/CONTRIBUTING.md"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-white transition-colors"
-                >
-                  Contribution Guidelines
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/IAR-010/tiger-cli/blob/main/LICENSE"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-white transition-colors"
-                >
-                  MIT License
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://x010.tech"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-cyan-300 transition-colors font-medium"
-                >
-                  Visit x010.tech
-                </a>
-              </li>
+          {/* Links Col 2 */}
+          <div className="space-y-2">
+            <h4 className="font-mono text-zinc-300 font-medium uppercase tracking-wider text-[11px]">Resources</h4>
+            <ul className="space-y-1.5 text-zinc-400">
+              <li><a href="https://github.com/IAR-010/tiger-cli" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-200 transition-colors">GitHub Repository</a></li>
+              <li><a href="https://github.com/IAR-010/tiger-cli/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-200 transition-colors">MIT License</a></li>
+              <li><a href="https://x010.tech" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-200 transition-colors">x010.tech Home</a></li>
             </ul>
           </div>
         </div>
 
-        {/* Bottom Copyright */}
-        <div className="max-w-7xl mx-auto pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div className="max-w-7xl mx-auto pt-6 border-t border-zinc-800/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-400">
           <div>
-            © 2026 Tiger Framework Authors. Powered by{' '}
-            <a
-              href="https://x010.tech"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-cyan-400 hover:underline font-semibold"
-            >
-              x010.tech
-            </a>{' '}
-            &{' '}
-            <a
-              href="https://github.com/IAR-010"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-slate-400 hover:underline"
-            >
+            © 2026 Tiger Framework Authors. Developed under{' '}
+            <a href="https://github.com/IAR-010" target="_blank" rel="noopener noreferrer" className="text-zinc-300 hover:underline">
               IAR-010
-            </a>
-            .
+            </a>{' '}
+            & backed by{' '}
+            <a href="https://x010.tech" target="_blank" rel="noopener noreferrer" className="text-zinc-300 hover:underline">
+              x010.tech
+            </a>.
           </div>
-          <div className="flex items-center gap-4 text-xs font-mono">
-            <span className="text-emerald-400 flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> All Systems Operational
-            </span>
+          <div className="font-mono text-[11px] text-zinc-400 flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-zinc-400" /> All Systems Operational
           </div>
         </div>
       </footer>

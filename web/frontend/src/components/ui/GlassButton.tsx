@@ -23,23 +23,25 @@ export const GlassButton: React.FC<GlassButtonProps> = ({
 
   const variantStyles = {
     primary:
-      "bg-amber-500/20 border-amber-400/40 text-amber-200 hover:bg-amber-500/30 hover:border-amber-300 shadow-[0_0_20px_rgba(245,158,11,0.2)]",
+      "bg-zinc-100 text-zinc-950 hover:bg-white border-zinc-200 shadow-sm",
     secondary:
-      "bg-white/[0.08] border-white/20 text-slate-100 hover:bg-white/[0.15] hover:border-white/30 shadow-[0_0_20px_rgba(255,255,255,0.1)]",
+      "bg-zinc-900 border-zinc-800 text-zinc-300 hover:bg-zinc-800 hover:text-white",
     danger:
-      "bg-rose-500/20 border-rose-400/40 text-rose-200 hover:bg-rose-500/30 hover:border-rose-300 shadow-[0_0_20px_rgba(244,63,94,0.2)]",
+      "bg-red-950/40 border-red-900/60 text-red-300 hover:bg-red-900/50",
   };
 
   return (
     <button
-      className={`relative inline-flex items-center justify-center font-semibold rounded-xl 
-        border backdrop-blur-md transition-all duration-200 ease-out active:scale-95 
+      className={`relative inline-flex items-center justify-center gap-2 font-medium rounded-lg 
+        border transition-colors duration-150 active:scale-[0.98] 
         disabled:opacity-50 disabled:pointer-events-none ${sizeStyles[size]} ${variantStyles[variant]} ${className}`}
       {...props}
     >
-      <span className="relative z-10">{children}</span>
+      {children}
     </button>
   );
 };
+
+
 
 export default GlassButton;

@@ -9,13 +9,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: "#030712",
-        foreground: "#f9fafb",
+        background: "#09090b",
+        foreground: "#f4f4f5",
       },
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+      fontFamily: {
+        orbitron: ['var(--font-orbitron)', 'Orbitron', 'sans-serif'],
       },
     },
   },
   plugins: [],
 };
+

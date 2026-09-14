@@ -48,26 +48,26 @@ export default function Playground3D() {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
       {/* Left Control Panel */}
-      <div className="lg:col-span-5 rounded-2xl border border-white/10 bg-slate-900/60 backdrop-blur-xl p-6 space-y-6 shadow-xl">
-        <div className="flex items-center gap-2 text-cyan-400 font-semibold border-b border-white/10 pb-3">
-          <Sliders className="w-5 h-5" />
-          <span>Realtime 3D Glass Customizer</span>
+      <div className="lg:col-span-5 rounded-xl border border-zinc-800 bg-zinc-950 p-6 space-y-5">
+        <div className="flex items-center gap-2 text-zinc-200 font-semibold border-b border-zinc-800 pb-3">
+          <Sliders className="w-4 h-4 text-zinc-400" />
+          <span className="text-sm">Component Inspector & Playground</span>
         </div>
 
         {/* Component Selector */}
         <div className="space-y-2">
-          <label className="text-xs font-mono text-slate-400 uppercase tracking-wider">Active Component</label>
+          <label className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider">Active Component</label>
           <div className="grid grid-cols-2 gap-2">
             {(['card', 'stats', 'button', 'modal'] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-3 py-2 rounded-xl text-xs font-semibold capitalize border transition-all ${
+                className={`px-3 py-2 rounded-lg text-xs font-medium capitalize border transition-colors ${
                   activeTab === tab
-                    ? 'bg-cyan-500/20 border-cyan-500/40 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.2)]'
-                    : 'bg-slate-800/50 border-white/5 text-slate-400 hover:text-white'
+                    ? 'bg-zinc-800 border-zinc-700 text-white'
+                    : 'bg-zinc-900/50 border-zinc-800 text-zinc-400 hover:text-zinc-200'
                 }`}
               >
                 Glass{tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -79,8 +79,8 @@ export default function Playground3D() {
         {/* Backdrop Blur Slider */}
         <div className="space-y-2">
           <div className="flex justify-between text-xs font-mono">
-            <span className="text-slate-400">Backdrop Blur</span>
-            <span className="text-cyan-400">{blurValue}px</span>
+            <span className="text-zinc-400">Backdrop Blur</span>
+            <span className="text-zinc-200">{blurValue}px</span>
           </div>
           <input
             type="range"
@@ -88,15 +88,15 @@ export default function Playground3D() {
             max="36"
             value={blurValue}
             onChange={(e) => setBlurValue(Number(e.target.value))}
-            className="w-full accent-cyan-400 bg-slate-800 h-1.5 rounded-lg cursor-pointer"
+            className="w-full accent-zinc-200 bg-zinc-800 h-1 rounded cursor-pointer"
           />
         </div>
 
         {/* Background Opacity Slider */}
         <div className="space-y-2">
           <div className="flex justify-between text-xs font-mono">
-            <span className="text-slate-400">Surface Opacity</span>
-            <span className="text-cyan-400">{opacityValue}%</span>
+            <span className="text-zinc-400">Surface Opacity</span>
+            <span className="text-zinc-200">{opacityValue}%</span>
           </div>
           <input
             type="range"
@@ -104,45 +104,19 @@ export default function Playground3D() {
             max="25"
             value={opacityValue}
             onChange={(e) => setOpacityValue(Number(e.target.value))}
-            className="w-full accent-cyan-400 bg-slate-800 h-1.5 rounded-lg cursor-pointer"
+            className="w-full accent-zinc-200 bg-zinc-800 h-1 rounded cursor-pointer"
           />
         </div>
 
-        {/* Glow Color Selector */}
-        <div className="space-y-2">
-          <label className="text-xs font-mono text-slate-400 uppercase tracking-wider">Neon Glow Accent</label>
-          <div className="grid grid-cols-4 gap-2">
-            {[
-              { id: 'cyan', bg: 'bg-cyan-400', label: 'Cyan' },
-              { id: 'amber', bg: 'bg-amber-400', label: 'Amber' },
-              { id: 'purple', bg: 'bg-purple-400', label: 'Violet' },
-              { id: 'emerald', bg: 'bg-emerald-400', label: 'Emerald' },
-            ].map((c) => (
-              <button
-                key={c.id}
-                onClick={() => setGlowColor(c.id as GlowColor)}
-                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-mono transition-all ${
-                  glowColor === c.id
-                    ? 'border-white/40 bg-white/10 text-white'
-                    : 'border-white/5 bg-slate-800/40 text-slate-400'
-                }`}
-              >
-                <span className={`w-2.5 h-2.5 rounded-full ${c.bg}`} />
-                {c.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Code Import Hint */}
-        <div className="p-3 rounded-xl bg-slate-950/80 border border-white/5 font-mono text-xs text-slate-400 space-y-1">
-          <div className="text-cyan-300 font-semibold">// Inject directly with Tiger CLI</div>
-          <div className="text-slate-300">tiger make:ui Glass{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}</div>
+        {/* Command Injection Snippet */}
+        <div className="p-3 rounded-lg bg-zinc-900 border border-zinc-800 font-mono text-xs text-zinc-400 space-y-1">
+          <div className="text-zinc-300 font-semibold">$ tiger make:ui Glass{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}</div>
+          <div className="text-[11px] text-zinc-500">Injects TypeScript + Tailwind component into frontend/src/components/ui</div>
         </div>
       </div>
 
       {/* Right Interactive Preview Canvas */}
-      <div className="lg:col-span-7 flex flex-col items-center justify-center p-8 rounded-2xl border border-white/10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900/90 via-slate-950 to-black relative min-h-[420px] overflow-hidden">
+      <div className="lg:col-span-7 flex flex-col items-center justify-center p-8 rounded-xl border border-zinc-800 bg-zinc-950 relative min-h-[380px]">
         {/* 3D Perspective Canvas with Live Tilt */}
         <div
           ref={cardRef}
@@ -160,37 +134,31 @@ export default function Playground3D() {
                 backdropFilter: `blur(${blurValue}px)`,
                 backgroundColor: `rgba(255, 255, 255, ${opacityValue / 100})`,
               }}
-              className={`p-6 rounded-2xl border ${glowStyles[glowColor]} transition-colors duration-300 space-y-4`}
+              className="p-6 rounded-xl border border-zinc-700 bg-zinc-900/60 shadow-xl space-y-4"
             >
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono px-2.5 py-1 rounded-full bg-white/5 border border-white/10">
-                  3D GlassCard Preview
+                <span className="text-[11px] font-mono px-2.5 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-zinc-300">
+                  GlassCard Preview
                 </span>
-                <Sparkles className="w-4 h-4" />
+                <Sparkles className="w-4 h-4 text-zinc-400" />
               </div>
-              <h3 className="text-xl font-bold text-white tracking-tight">
-                Hardware Accelerated 3D
+              <h3 className="text-lg font-bold text-white tracking-tight">
+                Hardware Accelerated 3D Engine
               </h3>
-              <p className="text-sm text-slate-300 leading-relaxed">
+              <p className="text-xs text-zinc-400 leading-relaxed">
                 Move your cursor across this card to experience responsive perspective rotation, reactive lighting, and customizable specular highlights.
               </p>
-              <div className="pt-2 flex items-center justify-between border-t border-white/10">
-                <span className="text-xs text-slate-400 font-mono">Tilt: {Math.round(rotateX)}° / {Math.round(rotateY)}°</span>
-                <GlassButton size="sm" variant="primary">Interactive</GlassButton>
+              <div className="pt-2 flex items-center justify-between border-t border-zinc-800">
+                <span className="text-xs text-zinc-500 font-mono">Tilt: {Math.round(rotateX)}° / {Math.round(rotateY)}°</span>
+                <GlassButton size="sm" variant="secondary">Interactive</GlassButton>
               </div>
             </div>
           )}
 
           {activeTab === 'stats' && (
-            <div
-              style={{
-                backdropFilter: `blur(${blurValue}px)`,
-                backgroundColor: `rgba(255, 255, 255, ${opacityValue / 100})`,
-              }}
-              className={`p-6 rounded-2xl border ${glowStyles[glowColor]} transition-colors duration-300`}
-            >
+            <div className="p-6 rounded-xl border border-zinc-800 bg-zinc-900/40">
               <GlassStats
-                label="Framework Build Velocity"
+                label="Scaffold Engine Velocity"
                 value="1.2 ms"
                 change="+480% faster"
                 isPositive={true}
@@ -199,35 +167,23 @@ export default function Playground3D() {
           )}
 
           {activeTab === 'button' && (
-            <div
-              style={{
-                backdropFilter: `blur(${blurValue}px)`,
-                backgroundColor: `rgba(255, 255, 255, ${opacityValue / 100})`,
-              }}
-              className={`p-10 rounded-2xl border ${glowStyles[glowColor]} transition-colors duration-300 flex flex-col items-center justify-center gap-4`}
-            >
-              <GlassButton size="lg" variant="primary">
-                Primary Glow Button
+            <div className="p-10 rounded-xl border border-zinc-800 bg-zinc-900/40 flex flex-col items-center justify-center gap-3">
+              <GlassButton size="md" variant="primary">
+                Primary Button
               </GlassButton>
               <GlassButton size="md" variant="secondary">
-                Secondary Glass
+                Secondary Outline
               </GlassButton>
             </div>
           )}
 
           {activeTab === 'modal' && (
-            <div
-              style={{
-                backdropFilter: `blur(${blurValue}px)`,
-                backgroundColor: `rgba(255, 255, 255, ${opacityValue / 100})`,
-              }}
-              className={`p-8 rounded-2xl border ${glowStyles[glowColor]} text-center space-y-4`}
-            >
-              <ShieldCheck className="w-10 h-10 mx-auto text-cyan-400" />
-              <h4 className="text-lg font-bold text-white">3D Glass Modal</h4>
-              <p className="text-xs text-slate-300">Trigger modal dialogs with smooth translucent backdrop blur.</p>
+            <div className="p-8 rounded-xl border border-zinc-800 bg-zinc-900/40 text-center space-y-4">
+              <ShieldCheck className="w-8 h-8 mx-auto text-zinc-300" />
+              <h4 className="text-sm font-bold text-white">3D Glass Modal</h4>
+              <p className="text-xs text-zinc-400">Trigger modal dialogs with smooth translucent backdrop blur.</p>
               <GlassButton size="sm" variant="primary" onClick={() => setModalOpen(true)}>
-                Open Live Modal
+                Open Modal Preview
               </GlassButton>
 
               <GlassModal
@@ -236,12 +192,12 @@ export default function Playground3D() {
                 title="Tiger Framework Modal"
               >
                 <div className="space-y-4">
-                  <p className="text-sm text-slate-300">
-                    This modal is rendered with deep backdrop blur and hardware acceleration. Injected straight from your Tiger CLI toolchain!
+                  <p className="text-xs text-zinc-300">
+                    This modal is rendered with deep backdrop blur and hardware acceleration. Injected straight from your Tiger CLI toolchain.
                   </p>
                   <div className="flex justify-end">
                     <GlassButton size="sm" variant="primary" onClick={() => setModalOpen(false)}>
-                      Got It!
+                      Close
                     </GlassButton>
                   </div>
                 </div>
