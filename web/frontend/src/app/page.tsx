@@ -8,6 +8,7 @@ import TerminalSimulator from '@/components/TerminalSimulator';
 import Playground3D from '@/components/Playground3D';
 import CommandDocs from '@/components/CommandDocs';
 import FrameworkComparison from '@/components/FrameworkComparison';
+import FaqSection from '@/components/FaqSection';
 import {
   Sparkles,
   Terminal,
@@ -349,7 +350,12 @@ export default function Home() {
         </section>
 
         {/* ============================================================ */}
-        {/* 8. OPEN SOURCE & COMMUNITY CALLOUT */}
+        {/* 8. GEO & SEO FAQ KNOWLEDGE SECTION */}
+        {/* ============================================================ */}
+        <FaqSection />
+
+        {/* ============================================================ */}
+        {/* 9. OPEN SOURCE & COMMUNITY CALLOUT */}
         {/* ============================================================ */}
         <section className="rounded-3xl border border-cyan-500/30 bg-gradient-to-b from-slate-900/90 via-slate-950 to-black p-8 sm:p-12 text-center space-y-6 shadow-[0_0_60px_rgba(6,182,212,0.15)] relative overflow-hidden">
           <div className="w-20 h-20 mx-auto rounded-2xl bg-slate-900 border border-cyan-500/40 p-2 shadow-[0_0_30px_rgba(6,182,212,0.3)]">
