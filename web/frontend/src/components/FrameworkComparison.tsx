@@ -5,7 +5,7 @@ import { Check, X, Sparkles } from 'lucide-react';
 
 export default function FrameworkComparison() {
   const rows = [
-    { feature: 'Instant Full-Stack Scaffold (FastAPI/Express + Next.js 14)', tiger: true, nextjs: false, django: false, laravel: false },
+    { feature: 'Instant Full-Stack Scaffold (FastAPI/Express + Next.js 16.3.5)', tiger: true, nextjs: false, django: false, laravel: false },
     { feature: 'Built-in 3D Glassmorphism UI Component Library', tiger: true, nextjs: false, django: false, laravel: false },
     { feature: 'Autonomous Git Pipeline (tiger push auto-stage & push)', tiger: true, nextjs: false, django: false, laravel: false },
     { feature: 'Multi-DB Connector & Automated Migrations', tiger: true, nextjs: false, django: true, laravel: true },
@@ -53,19 +53,19 @@ export default function FrameworkComparison() {
                 </td>
                 <td className="py-3.5 px-5 text-center bg-zinc-800/20 border-x border-zinc-800 font-medium text-white">
                   {row.tigerText ? (
-                    <span className="text-zinc-100 font-semibold">{row.tigerText}</span>
+                    <span className="text-emerald-400 font-semibold">{row.tigerText}</span>
                   ) : (
-                    <Check className="w-4 h-4 mx-auto text-zinc-100" />
+                    <Check className="w-4 h-4 mx-auto text-emerald-400" />
                   )}
                 </td>
-                <td className="py-3.5 px-5 text-center text-zinc-500">
-                  {row.nextText ? row.nextText : <X className="w-3.5 h-3.5 mx-auto text-zinc-600" />}
+                <td className="py-3.5 px-5 text-center text-zinc-400">
+                  {row.nextText ? row.nextText : <X className="w-3.5 h-3.5 mx-auto text-rose-500" />}
                 </td>
-                <td className="py-3.5 px-5 text-center text-zinc-500">
-                  {row.djangoText ? row.djangoText : row.django ? <Check className="w-3.5 h-3.5 mx-auto text-zinc-400" /> : <X className="w-3.5 h-3.5 mx-auto text-zinc-600" />}
+                <td className="py-3.5 px-5 text-center text-zinc-400">
+                  {row.djangoText ? row.djangoText : row.django ? <Check className="w-3.5 h-3.5 mx-auto text-emerald-400" /> : <X className="w-3.5 h-3.5 mx-auto text-rose-500" />}
                 </td>
-                <td className="py-3.5 px-5 text-center text-zinc-500">
-                  {row.laravelText ? row.laravelText : row.laravel ? <Check className="w-3.5 h-3.5 mx-auto text-zinc-400" /> : <X className="w-3.5 h-3.5 mx-auto text-zinc-600" />}
+                <td className="py-3.5 px-5 text-center text-zinc-400">
+                  {row.laravelText ? row.laravelText : row.laravel ? <Check className="w-3.5 h-3.5 mx-auto text-emerald-400" /> : <X className="w-3.5 h-3.5 mx-auto text-rose-500" />}
                 </td>
               </tr>
             ))}

@@ -1,4 +1,4 @@
-{  
+{
   "lockfileVersion": 1,
   "framework": "Tiger Framework",
   "version": "0.1.0",
@@ -9,11 +9,10 @@
     "organization": "IAR-010",
     "logo": "assets/logo.png",
     "integrity": "sha256-d7b8f9e1c2a3b4e5f60718293a4b5c6d"
-"Next.js 14 (3D Glassmorphism)"
-  }
-    "architecture": {
+  },
+  "architecture": {
     "backend": "Python (FastAPI)",
     "database": "PostgreSQL",
-    "frontend": "Next.js 14 (3D Glassmorphism)"
+    "frontend": "Next.js 16.3.5 (3D Glassmorphism)"
   }
 }

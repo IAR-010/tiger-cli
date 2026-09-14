@@ -48,7 +48,7 @@ def display_studio_header(manifest: dict, cwd: Path) -> None:
     table.add_row("Database Engine", manifest.get("database", "PostgreSQL"))
     table.add_row(
         "Frontend",
-        "Next.js 14 App Router (3D Glassmorphism)"
+        "Next.js 16.3.5 App Router (3D Glassmorphism)"
         if manifest.get("frontend", True)
         else "None"
     )

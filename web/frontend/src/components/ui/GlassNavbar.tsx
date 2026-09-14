@@ -34,9 +34,11 @@ export const GlassNavbar: React.FC<GlassNavbarProps> = ({
         {/* Left: Logo + Brand Name */}
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 p-1 flex items-center justify-center group-hover:border-zinc-700 transition-colors">
-              <img src="/logo.png" alt="Tiger Framework Logo" className="w-full h-full object-contain" />
-            </div>
+            <img
+              src="/logo.png"
+              alt="Tiger Framework Logo"
+              className="h-8 w-8 sm:h-9 sm:w-9 object-contain shrink-0 group-hover:scale-105 transition-transform"
+            />
             <span className="text-sm font-semibold tracking-wider text-white uppercase group-hover:text-zinc-200 transition-colors">
               Tiger <span className="text-zinc-500 font-normal">Framework</span>
             </span>

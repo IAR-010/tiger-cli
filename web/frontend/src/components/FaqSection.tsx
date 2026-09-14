@@ -13,8 +13,8 @@ const FAQS: FaqItem[] = [
   {
     question: 'What is Tiger Framework and what makes it unique?',
     answer:
-      'Tiger Framework is a full-stack meta-framework and developer toolchain designed to accelerate web application development from scaffold to production. Unlike single-layer tools, Tiger Framework unifies Python (FastAPI) or Node.js (Express) backends with Next.js 14 App Router, auto-configured databases (PostgreSQL/MySQL/SQLite), Alembic migrations, a 3D Glassmorphism UI library, and an autonomous Git pipeline (tiger push). It is an open-source innovation engineered by x010.tech and IAR-010.',
-    keywords: ['meta-framework', 'FastAPI', 'Next.js 14', '3D Glassmorphism', 'x010.tech'],
+      'Tiger Framework is a full-stack meta-framework and developer toolchain designed to accelerate web application development from scaffold to production. Unlike single-layer tools, Tiger Framework unifies Python (FastAPI) or Node.js (Express) backends with Next.js 16.3.5 App Router, auto-configured databases (PostgreSQL/MySQL/SQLite), Alembic migrations, a 3D Glassmorphism UI library, and an autonomous Git pipeline (tiger push). It is an open-source innovation engineered by x010.tech and IAR-010.',
+    keywords: ['meta-framework', 'FastAPI', 'Next.js 16.3.5', '3D Glassmorphism', 'x010.tech'],
   },
   {
     question: 'How do I install Tiger CLI on Windows, macOS, or Linux?',
@@ -76,10 +76,10 @@ export default function FaqSection() {
           return (
             <div
               key={idx}
-              className={`rounded-xl border transition-colors overflow-hidden reveal-item reveal-delay-${(idx % 6) + 1} ${
+              className={`rounded-xl border transition-all duration-200 overflow-hidden ${
                 isOpen
-                  ? 'border-zinc-700 bg-zinc-900/60'
-                  : 'border-zinc-800 bg-zinc-900/20 hover:border-zinc-700/60'
+                  ? 'border-zinc-700 bg-zinc-900/60 shadow-lg'
+                  : 'border-zinc-800 bg-zinc-900/20 hover:border-zinc-700/70 hover:bg-zinc-900/40'
               }`}
             >
               <button

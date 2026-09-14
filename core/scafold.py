@@ -826,7 +826,7 @@ export default function Home() {{
             Crafted for <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-sky-200 to-blue-500">Unmatched Speed</span>
           </h1>
           <p className="text-lg text-slate-400 leading-relaxed">
-            Your full-stack foundation with <strong>{config.backend}</strong>, <strong>{config.database}</strong>, and <strong>Next.js 14 App Router</strong> with 3D Glassmorphic components.
+            Your full-stack foundation with <strong>{config.backend}</strong>, <strong>{config.database}</strong>, and <strong>Next.js 16.3.5 App Router</strong> with 3D Glassmorphic components.
           </p>
           <div className="flex items-center justify-center gap-4 pt-2">
             <GlassButton variant="primary" size="lg">Explore Docs</GlassButton>

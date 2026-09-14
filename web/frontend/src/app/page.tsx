@@ -391,7 +391,7 @@ export default function Home() {
                 icon: <Zap className="w-5 h-5 text-zinc-300" />,
                 title: 'Instant Scaffolding',
                 cmd: 'tiger create-app',
-                desc: 'Generate complete projects with FastAPI/Express, PostgreSQL/MySQL, and Next.js 14 in under two seconds.',
+                desc: 'Generate complete projects with FastAPI/Express, PostgreSQL/MySQL, and Next.js 16.3.5 in under two seconds.',
               },
               {
                 icon: <Code2 className="w-5 h-5 text-zinc-300" />,
@@ -516,9 +516,7 @@ export default function Home() {
         {/* 9. OPEN SOURCE & REPOSITORY BANNER */}
         {/* ============================================================ */}
         <section className="rounded-xl border border-zinc-800 bg-zinc-950 p-8 sm:p-12 text-center space-y-5 reveal-item">
-          <div className="w-14 h-14 mx-auto rounded-xl bg-zinc-900 border border-zinc-800 p-2 flex items-center justify-center">
-            <img src="/logo.png" alt="Tiger Logo" className="w-full h-full object-contain" />
-          </div>
+          <img src="/logo.png" alt="Tiger Logo" className="w-14 h-14 mx-auto object-contain drop-shadow-md select-none" />
           <div className="max-w-2xl mx-auto space-y-2">
             <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
               Open Source. Engineered for Developers.
@@ -558,9 +556,7 @@ export default function Home() {
           {/* Brand Col */}
           <div className="space-y-3 md:col-span-2">
             <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-lg bg-zinc-900 border border-zinc-800 p-1 flex items-center justify-center">
-                <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
-              </div>
+              <img src="/logo.png" alt="Logo" className="w-7 h-7 object-contain shrink-0 select-none" />
               <span className="text-sm font-semibold tracking-wider text-white uppercase">
                 Tiger <span className="text-zinc-500 font-normal">Framework</span>
               </span>

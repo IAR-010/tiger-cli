@@ -10,7 +10,7 @@
 
 Tiger Framework delivers a unified developer experience from first scaffold to production deployment:
 
-- 🚀 **Interactive CLI Scaffolding (`tiger create-app`)**: Fast project bootstrap with **Python (FastAPI)** or **Node.js (Express)**, configured databases (**PostgreSQL**, **MySQL**, **SQLite**), and **Next.js 14 App Router**.
+- 🚀 **Interactive CLI Scaffolding (`tiger create-app`)**: Fast project bootstrap with **Python (FastAPI)** or **Node.js (Express)**, configured databases (**PostgreSQL**, **MySQL**, **SQLite**), and **Next.js 16.3.5 App Router**.
 - 💎 **3D Glassmorphism UI Injection (`tiger make:ui`)**: Library of modern Tailwind CSS widgets with dark mode, hardware-accelerated 3D perspective tilting, dynamic specular lighting, and reactive neon glows (`GlassCard`, `GlassNavbar`, `GlassButton`, `GlassModal`, `GlassStats`).
 - 🔄 **Version Control Automation (`tiger push`)**: Single-command Git repository checks, auto-initialization, staging, interactive commit messages, and remote push.
 - 🗄️ **Database Management Toolkit (`tiger db`)**: Connection configuration (`tiger db init`), connection pooling in `.env`, and schema migration orchestrator (`tiger db migrate`).

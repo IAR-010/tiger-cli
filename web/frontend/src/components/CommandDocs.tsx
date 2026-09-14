@@ -19,7 +19,7 @@ const COMMANDS_DATA: CommandItem[] = [
     category: 'Scaffold',
     name: 'Scaffold Full-Stack App',
     command: 'tiger create-app <name>',
-    description: 'Scaffold an enterprise full-stack app with FastAPI or Express, PostgreSQL/MySQL/SQLite, and Next.js 14 with 3D Glassmorphism.',
+    description: 'Scaffold an enterprise full-stack app with FastAPI or Express, PostgreSQL/MySQL/SQLite, and Next.js 16.3.5 with 3D Glassmorphism.',
     flags: '--backend, --database, --frontend, --non-interactive',
     example: 'tiger create-app my-saas --backend "Python (FastAPI)" --database PostgreSQL',
   },
