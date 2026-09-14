@@ -14,6 +14,7 @@ module.exports = {
       },
       fontFamily: {
         orbitron: ['var(--font-orbitron)', 'Orbitron', 'sans-serif'],
+        shareTech: ['var(--font-share-tech)', 'sans-serif'],
       },
     },
   },

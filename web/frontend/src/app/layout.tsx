@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Orbitron } from 'next/font/google';
+import { Orbitron, Share_Tech } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 
@@ -7,6 +7,13 @@ const orbitron = Orbitron({
   subsets: ['latin'],
   weight: ['600', '700', '800'],
   variable: '--font-orbitron',
+  display: 'swap',
+});
+
+const shareTech = Share_Tech({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-share-tech',
   display: 'swap',
 });
 
@@ -190,7 +197,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className={`dark ${orbitron.variable}`}>
+    <html lang="en" className={`dark ${orbitron.variable} ${shareTech.variable}`}>
       <head>
         <link rel="icon" href="/logo.png" type="image/png" sizes="any" />
         <link rel="shortcut icon" href="/logo.png" type="image/png" />

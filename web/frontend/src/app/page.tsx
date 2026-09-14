@@ -271,8 +271,8 @@ export default function Home() {
 
           {/* Core One-Line Value Proposition */}
           <div className="space-y-1.5 max-w-4xl mx-auto animate-hero-3">
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl font-medium text-zinc-200 leading-snug tracking-tight whitespace-normal md:whitespace-nowrap">
-              <span className="text-emerald-500 font-semibold font-mono">1 Command.</span> Complete Full-Stack Folder Structure & Production Stack Ready in <span className="text-zinc-100 font-semibold font-mono tabular-nums">{heroTime}</span>.
+            <p className="font-shareTech text-base sm:text-lg md:text-xl lg:text-2xl text-zinc-200 leading-snug tracking-wide whitespace-normal md:whitespace-nowrap">
+              <span className="text-emerald-500 font-medium">1 Command.</span> Complete Full-Stack Folder Structure & Production Stack Ready in <span className="text-zinc-100 font-medium tabular-nums">{heroTime}</span>.
             </p>
             <p className="text-xs sm:text-sm text-zinc-400 font-normal">
               FastAPI or Express • Next.js 16 • PostgreSQL • 3D Glass UI • Zero-config deploy.
