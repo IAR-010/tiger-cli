@@ -312,63 +312,22 @@ def write_project_boilerplate(config: ProjectConfig) -> Path:
     }
     (root / "tiger.config.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
 
-    # 1b. tiger.lock (Tiger Framework Official Signature & Embedded Logo Watermark)
+    # 1b. tiger.lock (Tiger Framework Lightweight Lockfile & Signature)
     import hashlib
-    import base64
     sig_raw = f"{config.project_name}:tiger:0.1.0:x010.tech"
     sig_hash = hashlib.sha256(sig_raw.encode("utf-8")).hexdigest()
 
-    # Embed official 3D Tiger logo into lockfile
-    logo_file = Path(__file__).resolve().parent / "assets" / "logo.png"
-    logo_b64 = ""
-    logo_sha = ""
-    if logo_file.exists():
-        raw_logo = logo_file.read_bytes()
-        logo_sha = hashlib.sha256(raw_logo).hexdigest()
-        try:
-            from PIL import Image
-            import io
-            img = Image.open(logo_file)
-            img.thumbnail((128, 128))
-            buf = io.BytesIO()
-            img.save(buf, format="PNG", optimize=True)
-            logo_b64 = "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode("utf-8")
-        except Exception:
-            logo_b64 = "data:image/png;base64," + base64.b64encode(raw_logo[:32768]).decode("utf-8")
-
     lock_data = {
-        "$schema": "https://tiger-framework.org/schema/v1/lock.json",
+        "lockfileVersion": 1,
+        "framework": "Tiger Framework",
+        "version": "0.1.0",
         "project": config.project_name,
-        "framework": {
-            "name": "Tiger Framework",
-            "version": "0.1.0",
-            "engine": "tiger-cli",
-            "parent_company": "x010.tech",
-            "organization": "IAR-010",
-            "website": "https://x010.tech",
-            "repository": "https://github.com/IAR-010/tiger-cli",
-        },
         "signature": {
-            "watermark": "TIGER-FRAMEWORK-OFFICIAL-BUILD",
-            "parent_company": "x010.tech",
+            "engine": "tiger-cli",
+            "provider": "x010.tech",
             "organization": "IAR-010",
+            "logo": "frontend/public/logo.png" if config.include_frontend else "assets/logo.png",
             "integrity": f"sha256-{sig_hash[:32]}",
-            "logo": {
-                "format": "image/png",
-                "asset_path": "frontend/public/logo.png" if config.include_frontend else "assets/logo.png",
-                "sha256": logo_sha,
-                "data_uri": logo_b64,
-            },
-            "ascii_badge": [
-                r"   /\_/\    TIGER FRAMEWORK",
-                r"  ( o.o )   OFFICIAL META-STACK",
-                r"   > ^ <    POWERED BY x010.tech",
-            ],
-        },
-        "architecture": {
-            "backend": config.backend,
-            "database": config.database,
-            "frontend": "Next.js 14 (3D Glassmorphism)" if config.include_frontend else "None",
         },
     }
     (root / "tiger.lock").write_text(json.dumps(lock_data, indent=2), encoding="utf-8")
