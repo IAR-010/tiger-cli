@@ -29,7 +29,7 @@ export const GlassNavbar: React.FC<GlassNavbarProps> = ({
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-zinc-800/80 bg-zinc-950/80 backdrop-blur-md">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-zinc-950/80 backdrop-blur-md">
       <nav className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
         {/* Left: Logo + Brand Name */}
         <div className="flex items-center gap-3">
@@ -57,6 +57,9 @@ export const GlassNavbar: React.FC<GlassNavbarProps> = ({
 
         {/* Center/Right: Clean Minimal Links */}
         <div className="hidden md:flex items-center gap-8 text-xs font-medium text-zinc-400">
+          <Link href="/docs" className="hover:text-zinc-100 transition-colors font-medium text-white flex items-center gap-1">
+            <span>Docs</span>
+          </Link>
           <a href="#terminal" onClick={(e) => scrollToSection(e, 'terminal')} className="hover:text-zinc-100 transition-colors">
             Terminal
           </a>
@@ -106,6 +109,7 @@ export const GlassNavbar: React.FC<GlassNavbarProps> = ({
       {/* Mobile Drawer */}
       {isOpen && (
         <div className="md:hidden border-b border-zinc-800 bg-zinc-950 px-6 py-4 space-y-3 text-xs text-zinc-300">
+          <div><Link href="/docs" onClick={() => setIsOpen(false)} className="block py-1 hover:text-white font-medium text-white">Docs</Link></div>
           <div><a href="#terminal" onClick={(e) => scrollToSection(e, 'terminal')} className="block py-1 hover:text-white">Terminal</a></div>
           <div><a href="#architecture" onClick={(e) => scrollToSection(e, 'architecture')} className="block py-1 hover:text-white">Architecture</a></div>
           <div><a href="#commands" onClick={(e) => scrollToSection(e, 'commands')} className="block py-1 hover:text-white">Commands</a></div>

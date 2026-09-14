@@ -57,6 +57,34 @@ export default function Home() {
     npx: 'npx tiger-cli create-app my-saas',
   };
 
+  const [typedInstallCmd, setTypedInstallCmd] = useState(installCommands['npm']);
+  const [isTypingInstall, setIsTypingInstall] = useState(false);
+  const typingTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const switchInstallTab = (tab: InstallTab) => {
+    if (tab === installTab && typedInstallCmd === installCommands[tab]) return;
+    setInstallTab(tab);
+    const targetCmd = installCommands[tab];
+
+    if (typingTimerRef.current) {
+      clearInterval(typingTimerRef.current);
+    }
+
+    setIsTypingInstall(true);
+    setTypedInstallCmd('');
+
+    let charIdx = 0;
+    typingTimerRef.current = setInterval(() => {
+      charIdx++;
+      if (charIdx <= targetCmd.length) {
+        setTypedInstallCmd(targetCmd.slice(0, charIdx));
+      } else {
+        if (typingTimerRef.current) clearInterval(typingTimerRef.current);
+        setIsTypingInstall(false);
+      }
+    }, 28);
+  };
+
   const copyToClipboard = async (text: string) => {
     try {
       if (navigator?.clipboard?.writeText) {
@@ -210,7 +238,7 @@ export default function Home() {
                 <span className="text-emerald-400 font-bold">03.</span> 1-Click Push
               </div>
               <p className="text-[11px] text-zinc-400 mt-1 leading-snug font-sans">
-                Autonomous <code className="text-zinc-300">tiger push</code>, Docker Compose & Nginx SSL.
+                Autonomous <code className="text-emerald-400 font-mono font-semibold">tiger push</code>, Docker Compose & Nginx SSL.
               </p>
             </div>
             <div className="p-3 rounded-lg bg-zinc-900/40 border border-zinc-800/80 animate-hero-7 hover:border-zinc-700/80 transition-colors">
@@ -246,7 +274,7 @@ export default function Home() {
               {/* OS / Package Switcher Tabs */}
               <div className="flex items-center gap-1 bg-zinc-950 p-0.5 rounded-md border border-zinc-800 text-[11px] font-mono">
                 <button
-                  onClick={() => setInstallTab('npm')}
+                  onClick={() => switchInstallTab('npm')}
                   className={`px-2.5 py-1 rounded transition-colors ${
                     installTab === 'npm'
                       ? 'bg-zinc-800 text-white font-medium shadow-sm'
@@ -256,7 +284,7 @@ export default function Home() {
                   NPM
                 </button>
                 <button
-                  onClick={() => setInstallTab('pip')}
+                  onClick={() => switchInstallTab('pip')}
                   className={`px-2.5 py-1 rounded transition-colors ${
                     installTab === 'pip'
                       ? 'bg-zinc-800 text-white font-medium shadow-sm'
@@ -266,7 +294,7 @@ export default function Home() {
                   PIP (Python)
                 </button>
                 <button
-                  onClick={() => setInstallTab('npx')}
+                  onClick={() => switchInstallTab('npx')}
                   className={`px-2.5 py-1 rounded transition-colors ${
                     installTab === 'npx'
                       ? 'bg-zinc-800 text-white font-medium shadow-sm'
@@ -282,8 +310,12 @@ export default function Home() {
             <div className="p-4 bg-zinc-950 flex items-center justify-between gap-4 font-mono text-xs sm:text-sm">
               <div className="flex items-center gap-3 overflow-x-auto text-zinc-200">
                 <span className="text-zinc-500 select-none">$</span>
-                <span className="truncate font-medium">{installCommands[installTab]}</span>
-                <span className="w-2 h-4 bg-zinc-400 inline-block animate-cursor" />
+                <span className="truncate font-medium text-white">{typedInstallCmd}</span>
+                <span
+                  className={`w-2 h-4 bg-emerald-400 inline-block align-middle ${
+                    isTypingInstall ? 'opacity-100' : 'animate-cursor'
+                  }`}
+                />
               </div>
 
               <button
@@ -335,16 +367,43 @@ export default function Home() {
         {/* ============================================================ */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="spotlight-card rounded-xl reveal-item reveal-delay-1">
-            <GlassStats label="Scaffold Velocity" value="< 2 sec" change="10x Faster" isPositive={true} />
+            <GlassStats
+              label="Scaffold Velocity"
+              prefix="< "
+              targetNumber={1.4}
+              decimals={1}
+              suffix=" sec"
+              change="10x Faster"
+              isPositive={true}
+            />
           </div>
           <div className="spotlight-card rounded-xl reveal-item reveal-delay-2">
-            <GlassStats label="Async API Latency" value="1.8 ms" change="FastAPI Engine" isPositive={true} />
+            <GlassStats
+              label="Async API Latency"
+              targetNumber={1.8}
+              decimals={1}
+              suffix=" ms"
+              change="FastAPI Engine"
+              isPositive={true}
+            />
           </div>
           <div className="spotlight-card rounded-xl reveal-item reveal-delay-3">
-            <GlassStats label="UI Components" value="5 Injected" change="Tailwind 3D" isPositive={true} />
+            <GlassStats
+              label="UI Components"
+              targetNumber={5}
+              suffix=" Injected"
+              change="Tailwind 3D"
+              isPositive={true}
+            />
           </div>
           <div className="spotlight-card rounded-xl reveal-item reveal-delay-4">
-            <GlassStats label="Test Coverage" value="100%" change="12/12 Automated" isPositive={true} />
+            <GlassStats
+              label="Test Coverage"
+              targetNumber={100}
+              suffix="%"
+              change="12/12 Automated"
+              isPositive={true}
+            />
           </div>
         </section>
 

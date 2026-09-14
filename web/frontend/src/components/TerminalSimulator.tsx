@@ -29,6 +29,7 @@ interface CommandExecution {
   command: string;
   lines: TerminalLine[];
   isRunning?: boolean;
+  isTyping?: boolean;
 }
 
 const getCreateAppFlow = (appName: string): TerminalLine[] => [
@@ -109,7 +110,7 @@ export default function TerminalSimulator() {
   const [isExecuting, setIsExecuting] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const runLiveFlow = (cmdName: string) => {
+  const runLiveFlow = (cmdName: string, animateType: boolean = true) => {
     const trimmed = cmdName.trim();
     if (!trimmed || isExecuting) return;
 
@@ -142,54 +143,105 @@ export default function TerminalSimulator() {
     setIsExecuting(true);
     setInputVal('');
 
-    // Add entry with empty lines first
-    const newEntry: CommandExecution = {
-      command: trimmed,
-      lines: [],
-      isRunning: true,
+    const startLineStreaming = () => {
+      let lineIdx = 0;
+      const interval = setInterval(() => {
+        if (lineIdx < fullFlow.length) {
+          const nextLine = fullFlow[lineIdx];
+          setHistory((prev) => {
+            const updated = [...prev];
+            const last = { ...updated[updated.length - 1] };
+            
+            // Replace last progress line if both are progress with same prefix task
+            const lastLine = last.lines[last.lines.length - 1];
+            const isSameProgressTask =
+              nextLine.type === 'progress' &&
+              lastLine &&
+              lastLine.type === 'progress' &&
+              lastLine.text.slice(0, 18) === nextLine.text.slice(0, 18);
+
+            if (isSameProgressTask) {
+              last.lines = [...last.lines.slice(0, -1), nextLine];
+            } else {
+              last.lines = [...last.lines, nextLine];
+            }
+
+            updated[updated.length - 1] = last;
+            return updated;
+          });
+          lineIdx++;
+        } else {
+          clearInterval(interval);
+          setHistory((prev) => {
+            const updated = [...prev];
+            if (updated.length > 0) {
+              updated[updated.length - 1].isRunning = false;
+              updated[updated.length - 1].isTyping = false;
+            }
+            return updated;
+          });
+          setIsExecuting(false);
+        }
+      }, 130);
     };
 
-    setHistory((prev) => [...prev, newEntry]);
+    if (animateType) {
+      // Natural human typewriter effect for realistic developer feel
+      const newEntry: CommandExecution = {
+        command: '',
+        lines: [],
+        isRunning: true,
+        isTyping: true,
+      };
 
-    // Stream lines sequentially for live terminal experience
-    let lineIdx = 0;
-    const interval = setInterval(() => {
-      if (lineIdx < fullFlow.length) {
-        const nextLine = fullFlow[lineIdx];
-        setHistory((prev) => {
-          const updated = [...prev];
-          const last = { ...updated[updated.length - 1] };
-          
-          // Replace last progress line if both are progress with same prefix task
-          const lastLine = last.lines[last.lines.length - 1];
-          const isSameProgressTask =
-            nextLine.type === 'progress' &&
-            lastLine &&
-            lastLine.type === 'progress' &&
-            lastLine.text.slice(0, 18) === nextLine.text.slice(0, 18);
+      setHistory((prev) => [...prev, newEntry]);
 
-          if (isSameProgressTask) {
-            last.lines = [...last.lines.slice(0, -1), nextLine];
-          } else {
-            last.lines = [...last.lines, nextLine];
-          }
+      let charIdx = 0;
+      const typeInterval = setInterval(() => {
+        charIdx++;
+        if (charIdx <= trimmed.length) {
+          setHistory((prev) => {
+            const updated = [...prev];
+            if (updated.length > 0) {
+              updated[updated.length - 1] = {
+                ...updated[updated.length - 1],
+                command: trimmed.slice(0, charIdx),
+                isTyping: true,
+              };
+            }
+            return updated;
+          });
+        } else {
+          clearInterval(typeInterval);
+          // Natural human pause after hitting Enter (260ms), then start live output stream
+          setTimeout(() => {
+            setHistory((prev) => {
+              const updated = [...prev];
+              if (updated.length > 0) {
+                updated[updated.length - 1] = {
+                  ...updated[updated.length - 1],
+                  command: trimmed,
+                  isTyping: false,
+                };
+              }
+              return updated;
+            });
+            startLineStreaming();
+          }, 260);
+        }
+      }, 52); // ~52ms per character: realistic, natural human typing speed that is easy to read
+    } else {
+      // Direct execution when user already typed into the input field
+      const newEntry: CommandExecution = {
+        command: trimmed,
+        lines: [],
+        isRunning: true,
+        isTyping: false,
+      };
 
-          updated[updated.length - 1] = last;
-          return updated;
-        });
-        lineIdx++;
-      } else {
-        clearInterval(interval);
-        setHistory((prev) => {
-          const updated = [...prev];
-          if (updated.length > 0) {
-            updated[updated.length - 1].isRunning = false;
-          }
-          return updated;
-        });
-        setIsExecuting(false);
-      }
-    }, 130);
+      setHistory((prev) => [...prev, newEntry]);
+      startLineStreaming();
+    }
   };
 
   const terminalBodyRef = useRef<HTMLDivElement>(null);
@@ -417,7 +469,10 @@ export default function TerminalSimulator() {
               <span className="text-zinc-400">~/projects</span>
               <span className="text-zinc-600">%</span>
               <span className="text-white font-semibold">{item.command}</span>
-              {item.isRunning && (
+              {item.isTyping && (
+                <span className="w-2 h-4 bg-emerald-400 inline-block align-middle ml-0.5 animate-cursor" />
+              )}
+              {item.isRunning && !item.isTyping && (
                 <Loader2 className="w-3 h-3 text-zinc-400 animate-spin ml-1" />
               )}
             </div>
@@ -431,7 +486,7 @@ export default function TerminalSimulator() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            runLiveFlow(inputVal);
+            runLiveFlow(inputVal, false);
           }}
           className="flex items-center gap-2 text-zinc-200 pt-2"
         >
@@ -469,7 +524,7 @@ export default function TerminalSimulator() {
           <button
             key={cmd}
             disabled={isExecuting}
-            onClick={() => runLiveFlow(cmd)}
+            onClick={() => runLiveFlow(cmd, true)}
             className="px-2.5 py-1 text-xs font-mono rounded bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 border border-zinc-800 hover:border-zinc-700 transition-colors disabled:opacity-50 inline-flex items-center gap-1.5"
           >
             <Play className="w-2.5 h-2.5 opacity-60 fill-current" />
