@@ -148,6 +148,38 @@ export default function Home() {
     return () => clearTimeout(startTimer);
   }, []);
 
+  // Live Millisecond Counter from 0.0s to 1.4s
+  const [heroTime, setHeroTime] = useState('0.0s');
+  useEffect(() => {
+    const duration = 1200; // 1.2s smooth deceleration
+    const target = 1.4;
+    let frameId: number;
+    const startDelay = setTimeout(() => {
+      const startTime = performance.now();
+
+      const updateCounter = (currentTime: number) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+        const current = (ease * target).toFixed(1);
+        setHeroTime(`${current}s`);
+
+        if (progress < 1) {
+          frameId = requestAnimationFrame(updateCounter);
+        } else {
+          setHeroTime('1.4s');
+        }
+      };
+
+      frameId = requestAnimationFrame(updateCounter);
+    }, 350);
+
+    return () => {
+      clearTimeout(startDelay);
+      if (frameId) cancelAnimationFrame(frameId);
+    };
+  }, []);
+
   const renderStyledHeadline = (text: string) => {
     const p1 = text.slice(0, 11); // "Full-Stack "
     const p2 = text.slice(11, 20); // "Framework"
@@ -240,7 +272,7 @@ export default function Home() {
           {/* Core One-Line Value Proposition */}
           <div className="space-y-1.5 max-w-4xl mx-auto animate-hero-3">
             <p className="text-sm sm:text-base md:text-lg lg:text-xl font-medium text-zinc-200 leading-snug tracking-tight whitespace-normal md:whitespace-nowrap">
-              <span className="text-emerald-500 font-semibold font-mono">1 Command.</span> Complete Full-Stack Folder Structure & Production Stack Ready in <span className="text-zinc-100 font-semibold">1.4s</span>.
+              <span className="text-emerald-500 font-semibold font-mono">1 Command.</span> Complete Full-Stack Folder Structure & Production Stack Ready in <span className="text-zinc-100 font-semibold font-mono tabular-nums">{heroTime}</span>.
             </p>
             <p className="text-xs sm:text-sm text-zinc-400 font-normal">
               FastAPI or Express • Next.js 16 • PostgreSQL • 3D Glass UI • Zero-config deploy.
@@ -254,7 +286,7 @@ export default function Home() {
                 <span className="text-emerald-400 font-bold">01.</span> 1-Cmd Scaffold
               </div>
               <p className="text-[11px] text-zinc-400 mt-1 leading-snug font-sans">
-                Full-stack folder structure ready in 1.4s.
+                Full-stack folder structure ready in <span className="font-mono tabular-nums">{heroTime}</span>.
               </p>
             </div>
             <div className="p-3 rounded-lg bg-zinc-900/40 border border-zinc-800/80 animate-hero-5 hover:border-zinc-700/80 transition-colors">
