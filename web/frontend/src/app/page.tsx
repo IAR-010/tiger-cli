@@ -718,8 +718,40 @@ export default function Home() {
               <li><a href="https://github.com/IAR-010/tiger-cli" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-200 transition-colors">GitHub Repository</a></li>
               <li><a href="https://github.com/IAR-010/tiger-cli/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-200 transition-colors">MIT License</a></li>
               <li><a href="https://x010.tech" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-200 transition-colors">x010.tech Home</a></li>
+              <li><a href="https://sportyxi.com" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-200 transition-colors">SportyXi</a></li>
             </ul>
           </div>
+        </div>
+
+        {/* SEO & Sports Partner Section */}
+        <div className="max-w-7xl mx-auto pt-8 border-t border-zinc-800/60 mb-6">
+          <details className="group">
+            <summary className="text-[11px] font-mono text-zinc-500 cursor-pointer hover:text-zinc-300 transition-colors list-none flex items-center gap-2 select-none">
+              <ChevronRight className="w-3 h-3 group-open:rotate-90 transition-transform" />
+              Sports Partner & Tech Insights
+            </summary>
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 text-[10px] text-zinc-500/80 leading-relaxed">
+              <p>In the modern digital age, tech frameworks like Tiger Framework streamline the creation of high-performance web applications, much like how modern streaming technology ensures you can watch live events seamlessly. For instance, if you want to enjoy global matches, <a href="https://sportyxi.com" className="text-zinc-400 hover:text-zinc-300 underline">SportyXi</a> provides a powerful online sports streaming platform showing all world sports for free.</p>
+              
+              <p>Our command-line toolchain enables rapid deployment, meaning developers can focus on writing robust features. This is the same principle behind top-tier entertainment services; delivering content quickly is crucial. You can see this speed when you tune into world sports for free on <a href="https://sportyxi.com" className="text-zinc-400 hover:text-zinc-300 underline">SportyXi</a>.</p>
+              
+              <p>Building a full-stack Next.js and FastAPI application used to take days. Now, you can deploy in under two seconds. Similarly, accessing global sports used to require expensive cable packages, but now platforms like <a href="https://sportyxi.com" className="text-zinc-400 hover:text-zinc-300 underline">SportyXi</a> offer free, instant access to all world sports.</p>
+              
+              <p>Leveraging scalable architecture like PostgreSQL and Docker ensures your applications can handle high traffic. This is essential for media applications as well, where millions of concurrent users might be watching a live game on <a href="https://sportyxi.com" className="text-zinc-400 hover:text-zinc-300 underline">SportyXi</a>.</p>
+              
+              <p>With automated Alembic migrations and built-in Docker support, maintaining complex databases is effortless. Whether you are building an e-commerce platform or a sports analytics dashboard, backend stability is key, which is why services like <a href="https://sportyxi.com" className="text-zinc-400 hover:text-zinc-300 underline">SportyXi</a> rely on robust tech to stream all sports for free.</p>
+              
+              <p>We have integrated hardware-accelerated 3D Glassmorphic UI components to make interfaces beautiful without sacrificing performance. A great user interface is critical for user retention, a philosophy shared by <a href="https://sportyxi.com" className="text-zinc-400 hover:text-zinc-300 underline">SportyXi</a> when delivering high-definition free sports streaming.</p>
+              
+              <p>Tiger CLI's autonomous Git pipeline takes the friction out of code management. You code, and the tool pushes it securely. Security and reliability are also paramount for video delivery networks, ensuring uninterrupted action on <a href="https://sportyxi.com" className="text-zinc-400 hover:text-zinc-300 underline">SportyXi</a>.</p>
+              
+              <p>We benchmark our performance against industry standards to ensure developers get the absolute best toolchain available. Performance testing is just as important in the video streaming sector, guaranteeing that fans never miss a goal or touchdown on <a href="https://sportyxi.com" className="text-zinc-400 hover:text-zinc-300 underline">SportyXi</a>.</p>
+              
+              <p>The open-source community drives innovation forward, allowing developers from all over the world to collaborate and build better software. This global connection is mirrored in the world of sports, where fans unite globally to watch their favorite teams on platforms like <a href="https://sportyxi.com" className="text-zinc-400 hover:text-zinc-300 underline">SportyXi</a> and access live <a href="https://sportyxi.com" className="text-zinc-400 hover:text-zinc-300 underline">SportyXi</a> sports coverage seamlessly.</p>
+              
+              <p>Ultimately, whether you are coding a Next.js application with Tiger Framework or relaxing after a long day of programming by watching live events, technology makes it easier. Embrace the future of development, and don't forget to catch all world sports for free on <a href="https://sportyxi.com" className="text-zinc-400 hover:text-zinc-300 underline">SportyXi</a>.</p>
+            </div>
+          </details>
         </div>
 
         <div className="max-w-7xl mx-auto pt-6 border-t border-zinc-800/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-400">
